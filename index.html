@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Agence de Scott — Création digitale & Assistance informatique | Vallée de la Thur</title>
+    <meta name="description"
+        content="L'Agence de Scott, votre agence digitale locale à Saint-Amarin. Création de sites web, design graphique et assistance informatique à domicile dans la Vallée de la Thur.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        thur: {
+                            50: '#f0f7ed', 100: '#dcedd4', 200: '#b9d9a9', 300: '#8fbe73',
+                            400: '#6da34b', 500: '#4f862e', 600: '#3d6b24', 700: '#325320',
+                            800: '#2a431c', 900: '#1e3515',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes drawLine {
+            from {
+                stroke-dashoffset: 200;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-400 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-500 {
+            animation-delay: 0.5s;
+        }
+
+        .logo-mountain {
+            stroke-dasharray: 200;
+            animation: drawLine 2s ease forwards;
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAFAFA;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #e4e4e7;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4d4d8;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(-3deg);
+        }
+
+        .service-card:hover .service-arrow {
+            transform: translateX(4px);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4f862e;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero video background */
+        .hero-video-wrap {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .hero-video-wrap video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-zinc-900 bg-white antialiased">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-2.5 group">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
+                    class="transition-transform duration-500 group-hover:rotate-[-5deg]">
+                    <path d="M2 30 L12 10 L17 20" stroke="#4f862e" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" class="logo-mountain" />
+                    <path d="M17 20 L22 12 L34 30" stroke="#4f862e" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" class="logo-mountain" style="animation-delay:0.4s" />
+                    <path d="M14 24 Q18 28 22 24" stroke="#7eb952" stroke-width="1.8" stroke-linecap="round" fill="none"
+                        class="logo-mountain" style="animation-delay:0.8s" />
+                    <circle cx="18" cy="8" r="2" fill="#4f862e" class="float-anim" />
+                    <circle cx="18" cy="8" r="2" fill="#4f862e" opacity="0.3">
+                        <animate attributeName="r" values="2;6;2" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+                <div class="flex flex-col leading-none">
+                    <span class="text-base font-semibold tracking-tight text-zinc-900">L'Agence de Scott</span>
+                    <span class="text-[9px] uppercase tracking-[0.15em] text-thur-500 font-medium">Vallée de la
+                        Thur</span>
+                </div>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#services"
+                    class="nav-link text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-150">Services</a>
+                <a href="#apropos"
+                    class="nav-link text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-150">À
+                    propos</a>
+                <a href="#zone"
+                    class="nav-link text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-150">Zone</a>
+                <a href="#realisations"
+                    class="nav-link text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-150">Réalisations</a>
+                <a href="#contact"
+                    class="inline-flex items-center gap-2 bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-medium px-5 py-2.5 rounded-full transition-colors duration-150 shadow-lg shadow-zinc-900/10">
+                    <span class="iconify w-3.5 h-3.5" data-icon="lucide:message-circle"></span>
+                    Contact
+                </a>
+            </div>
+            <button class="md:hidden p-2 -mr-2 text-zinc-600 hover:text-zinc-900 transition-colors"
+                onclick="toggleMenu()">
+                <span class="iconify w-5 h-5" data-icon="lucide:menu" id="menuIcon"></span>
+            </button>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden border-t border-zinc-100 bg-white/95 backdrop-blur-xl">
+            <div class="px-4 py-6 space-y-4">
+                <a href="#services" class="block text-sm text-zinc-600 hover:text-zinc-900"
+                    onclick="toggleMenu()">Services</a>
+                <a href="#apropos" class="block text-sm text-zinc-600 hover:text-zinc-900" onclick="toggleMenu()">À
+                    propos</a>
+                <a href="#zone" class="block text-sm text-zinc-600 hover:text-zinc-900" onclick="toggleMenu()">Zone
+                    d'intervention</a>
+                <a href="#realisations" class="block text-sm text-zinc-600 hover:text-zinc-900"
+                    onclick="toggleMenu()">Réalisations</a>
+                <a href="#contact"
+                    class="inline-flex items-center gap-2 bg-zinc-900 text-white text-xs font-medium px-5 py-2.5 rounded-full mt-2"
+                    onclick="toggleMenu()">
+                    <span class="iconify w-3.5 h-3.5" data-icon="lucide:message-circle"></span>
+                    Me contacter
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Video Background -->
+        <div class="hero-video-wrap">
+            <video autoplay muted loop playsinline poster="https://picsum.photos/id/89/4608/2592">
+                <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4
+" type="video/mp4">
+            </video>
+            <!-- Overlay for readability -->
+            <div class="absolute inset-0 bg-gradient-to-b from-zinc-900/70 via-zinc-900/50 to-zinc-900/80"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-6 py-32 md:py-0">
+            <div class="max-w-3xl mx-auto text-center">
+                <div
+                    class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-8 opacity-0 animate-fadeInUp">
+                    <span class="w-1.5 h-1.5 bg-thur-400 rounded-full animate-pulse"></span>
+                    <span class="text-xs font-medium text-white/90">Basé à Saint-Amarin · Vallée de la Thur</span>
+                </div>
+                <h1
+                    class="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.08] text-white opacity-0 animate-fadeInUp delay-100">
+                    Le digital,<br><span class="text-thur-400">à taille humaine.</span>
+                </h1>
+                <p
+                    class="mt-6 md:mt-8 text-base md:text-lg text-zinc-300 leading-relaxed max-w-xl mx-auto opacity-0 animate-fadeInUp delay-200">
+                    Création de sites web, design graphique et assistance informatique. Un accompagnement de proximité,
+                    dans la vallée et ses alentours.
+                </p>
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 opacity-0 animate-fadeInUp delay-300">
+                    <a href="#contact"
+                        class="inline-flex items-center gap-2 bg-thur-500 hover:bg-thur-600 text-white text-sm font-medium px-7 py-3.5 rounded-full transition-all duration-150 shadow-lg shadow-thur-900/30">
+                        <span class="iconify w-4 h-4" data-icon="lucide:message-circle"></span>
+                        Parlons de votre projet
+                    </a>
+                    <a href="#services"
+                        class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-sm font-medium px-7 py-3.5 rounded-full border border-white/20 transition-all duration-150">
+                        Découvrir mes services
+                        <span class="iconify w-4 h-4" data-icon="lucide:arrow-down"></span>
+                    </a>
+                </div>
+                <div class="flex items-center justify-center gap-6 mt-12 opacity-0 animate-fadeInUp delay-400">
+                    <div class="flex items-center gap-2 text-xs text-zinc-400">
+                        <span class="iconify w-4 h-4 text-thur-400" data-icon="lucide:map-pin"></span>Proximité garantie
+                    </div>
+                    <div class="w-1 h-1 bg-zinc-500 rounded-full"></div>
+                    <div class="flex items-center gap-2 text-xs text-zinc-400">
+                        <span class="iconify w-4 h-4 text-thur-400"
+                            data-icon="lucide:heart-handshake"></span>Accompagnement humain
+                    </div>
+                    <div class="w-1 h-1 bg-zinc-500 rounded-full hidden sm:block"></div>
+                    <div class="hidden sm:flex items-center gap-2 text-xs text-zinc-400">
+                        <span class="iconify w-4 h-4 text-thur-400" data-icon="lucide:shield-check"></span>Devis gratuit
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-0 right-0 z-10 flex justify-center opacity-0 animate-fadeInUp delay-500">
+            <a href="#services"
+                class="flex flex-col items-center gap-2 text-white/50 hover:text-white/80 transition-colors">
+                <span class="text-[10px] uppercase tracking-widest">Découvrir</span>
+                <span class="iconify w-5 h-5 animate-bounce" data-icon="lucide:chevron-down"></span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES ========== -->
+    <section id="services" class="py-20 md:py-32 bg-zinc-50/50">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="max-w-2xl mb-16">
+                <div
+                    class="inline-flex items-center gap-2 text-thur-600 text-xs font-semibold uppercase tracking-[0.12em] mb-4">
+                    <span class="w-6 h-px bg-thur-400"></span>Services
+                </div>
+                <h2 class="text-2xl md:text-4xl font-semibold tracking-tight">Trois expertises,<br>un seul interlocuteur
+                </h2>
+                <p class="mt-4 text-zinc-500 text-sm md:text-base leading-relaxed">Du site web à l'assistance
+                    informatique, je vous accompagne dans chaque étape de votre vie numérique. Toujours avec le même
+                    soin et la même proximité.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <div
+                    class="service-card group bg-white rounded-2xl p-8 border border-zinc-100 hover:border-thur-200 hover:shadow-lg hover:shadow-thur-50 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-thur-50/0 group-hover:bg-thur-50/50 rounded-bl-full transition-all duration-500 -z-0">
+                    </div>
+                    <div class="relative">
+                        <div
+                            class="service-icon w-14 h-14 bg-thur-50 group-hover:bg-thur-100 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300">
+                            <span class="iconify w-7 h-7 text-thur-600" data-icon="lucide:globe"></span>
+                        </div>
+                        <h3 class="text-lg font-semibold tracking-tight mb-3">Création de sites web</h3>
+                        <p class="text-sm text-zinc-500 leading-relaxed mb-6">Sites vitrines, e-commerce, portfolios… Je
+                            conçois des sites sur-mesure, rapides, accessibles et optimisés pour le référencement.
+                            Chaque pixel compte.</p>
+                        <ul class="space-y-2.5 mb-8">
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400" data-icon="lucide:check-circle-2"></span>Sites
+                                vitrines & e-commerce</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Référencement naturel (SEO)</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Responsive & rapide</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Maintenance & suivi</li>
+                        </ul>
+                        <div
+                            class="flex items-center gap-1.5 text-thur-600 text-xs font-medium group-hover:text-thur-700 transition-colors">
+                            En savoir plus <span
+                                class="iconify service-arrow w-3.5 h-3.5 transition-transform duration-150"
+                                data-icon="lucide:arrow-right"></span></div>
+                    </div>
+                </div>
+                <div
+                    class="service-card group bg-white rounded-2xl p-8 border border-zinc-100 hover:border-thur-200 hover:shadow-lg hover:shadow-thur-50 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-thur-50/0 group-hover:bg-thur-50/50 rounded-bl-full transition-all duration-500 -z-0">
+                    </div>
+                    <div class="relative">
+                        <div
+                            class="service-icon w-14 h-14 bg-thur-50 group-hover:bg-thur-100 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300">
+                            <span class="iconify w-7 h-7 text-thur-600" data-icon="lucide:palette"></span>
+                        </div>
+                        <h3 class="text-lg font-semibold tracking-tight mb-3">Design & Graphisme</h3>
+                        <p class="text-sm text-zinc-500 leading-relaxed mb-6">Identité visuelle, logos, supports print
+                            et digital. Je donne vie à vos idées avec créativité et cohérence, pour une image qui vous
+                            ressemble vraiment.</p>
+                        <ul class="space-y-2.5 mb-8">
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400" data-icon="lucide:check-circle-2"></span>Logos
+                                & identité visuelle</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Cartes de visite & flyers</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Visuels réseaux sociaux</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Charte graphique complète</li>
+                        </ul>
+                        <div
+                            class="flex items-center gap-1.5 text-thur-600 text-xs font-medium group-hover:text-thur-700 transition-colors">
+                            En savoir plus <span
+                                class="iconify service-arrow w-3.5 h-3.5 transition-transform duration-150"
+                                data-icon="lucide:arrow-right"></span></div>
+                    </div>
+                </div>
+                <div
+                    class="service-card group bg-white rounded-2xl p-8 border border-zinc-100 hover:border-thur-200 hover:shadow-lg hover:shadow-thur-50 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-thur-50/0 group-hover:bg-thur-50/50 rounded-bl-full transition-all duration-500 -z-0">
+                    </div>
+                    <div class="relative">
+                        <div
+                            class="service-icon w-14 h-14 bg-thur-50 group-hover:bg-thur-100 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300">
+                            <span class="iconify w-7 h-7 text-thur-600" data-icon="lucide:wrench"></span>
+                        </div>
+                        <h3 class="text-lg font-semibold tracking-tight mb-3">Assistance informatique</h3>
+                        <p class="text-sm text-zinc-500 leading-relaxed mb-6">Ordinateur qui rame, virus, installation,
+                            paramétrage… Je me déplace chez vous ou je prends la main à distance. L'informatique, sans
+                            prise de tête.</p>
+                        <ul class="space-y-2.5 mb-8">
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Intervention à domicile</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Dépannage & nettoyage</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Installation & configuration</li>
+                            <li class="flex items-center gap-2.5 text-xs text-zinc-600"><span
+                                    class="iconify w-4 h-4 text-thur-400"
+                                    data-icon="lucide:check-circle-2"></span>Assistance à距离</li>
+                        </ul>
+                        <div
+                            class="flex items-center gap-1.5 text-thur-600 text-xs font-medium group-hover:text-thur-700 transition-colors">
+                            En savoir plus <span
+                                class="iconify service-arrow w-3.5 h-3.5 transition-transform duration-150"
+                                data-icon="lucide:arrow-right"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== À PROPOS ========== -->
+    <section id="apropos" class="py-20 md:py-32">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+                <div class="relative">
+                    <div class="relative aspect-square flex items-center justify-center">
+                        <img src="assets/moi_x4_upscale-removebg-preview.png"
+                            alt="Jordan Schmidt — Fondateur de L'Agence de Scott" class="w-full h-full object-contain">
+                    </div>
+                    <div
+                        class="absolute bottom-4 right-0 md:bottom-8 md:-right-4 bg-white rounded-2xl shadow-xl shadow-zinc-900/10 p-4 md:p-5 border border-zinc-100 z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-thur-50 rounded-xl flex items-center justify-center"><span
+                                    class="iconify w-5 h-5 text-thur-600" data-icon="lucide:mountain"></span></div>
+                            <div>
+                                <p class="text-xs font-semibold text-zinc-900">Saint-Amarin</p>
+                                <p class="text-[10px] text-zinc-400">Vallée de la Thur</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-4 -left-4 w-24 h-24 border-2 border-thur-200 rounded-2xl -z-10"></div>
+                </div>
+                <div>
+                    <div
+                        class="inline-flex items-center gap-2 text-thur-600 text-xs font-semibold uppercase tracking-[0.12em] mb-4">
+                        <span class="w-6 h-px bg-thur-400"></span>À propos
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-semibold tracking-tight mb-6">Jordan, votre<br>voisin digital
+                    </h2>
+                    <div class="space-y-4 text-sm md:text-base text-zinc-500 leading-relaxed">
+                        <p>Je m'appelle <strong class="text-zinc-900 font-medium">Jordan Schmidt</strong>, et je suis
+                            avant tout un habitant de la vallée. C'est ici, à Saint-Amarin, que j'ai choisi de poser mes
+                            valises — et mes compétences.</p>
+                        <p>Après des années à naviguer dans le monde du numérique, j'ai voulu créer quelque chose de
+                            différent : une agence où l'humain est au centre, où chaque projet est traité avec le soin
+                            d'un artisan, et où vous n'avez jamais affaire à un interlocuteur lointain.</p>
+                        <p>Que vous ayez besoin d'un site web pour votre gîte, d'un logo pour votre commerce, ou
+                            simplement que votre ordinateur refuse de démarrer — je suis là, à quelques minutes de chez
+                            vous. <strong class="text-zinc-900 font-medium">Le digital ne devrait jamais être une source
+                                de stress.</strong></p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-zinc-100">
+                        <div>
+                            <div class="w-10 h-10 bg-thur-50 rounded-xl flex items-center justify-center mb-3"><span
+                                    class="iconify w-5 h-5 text-thur-600" data-icon="lucide:handshake"></span></div>
+                            <p class="text-xs font-semibold text-zinc-900">Proximité</p>
+                            <p class="text-[11px] text-zinc-400 mt-1">À 2 pas de chez vous</p>
+                        </div>
+                        <div>
+                            <div class="w-10 h-10 bg-thur-50 rounded-xl flex items-center justify-center mb-3"><span
+                                    class="iconify w-5 h-5 text-thur-600" data-icon="lucide:gem"></span></div>
+                            <p class="text-xs font-semibold text-zinc-900">Qualité</p>
+                            <p class="text-[11px] text-zinc-400 mt-1">Rien n'est laissé au hasard</p>
+                        </div>
+                        <div>
+                            <div class="w-10 h-10 bg-thur-50 rounded-xl flex items-center justify-center mb-3"><span
+                                    class="iconify w-5 h-5 text-thur-600" data-icon="lucide:smile"></span></div>
+                            <p class="text-xs font-semibold text-zinc-900">Simplicité</p>
+                            <p class="text-[11px] text-zinc-400 mt-1">Clair, sans jargon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ZONE D'INTERVENTION ========== -->
+    <section id="zone" class="py-20 md:py-32 bg-zinc-50/50">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                <div>
+                    <div
+                        class="inline-flex items-center gap-2 text-thur-600 text-xs font-semibold uppercase tracking-[0.12em] mb-4">
+                        <span class="w-6 h-px bg-thur-400"></span>Zone d'intervention
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-semibold tracking-tight mb-6">La montagne,<br>c'est mon terrain
+                    </h2>
+                    <p class="text-sm md:text-base text-zinc-500 leading-relaxed mb-8">Basé à Saint-Amarin, j'interviens
+                        dans toute la vallée de la Thur et au-delà. Pour l'assistance informatique à domicile, je me
+                        déplace directement chez vous. Pour le web et le design, la distance n'est pas un problème.</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-zinc-100">
+                            <span class="iconify w-4 h-4 text-thur-500" data-icon="lucide:map-pin"></span>
+                            <span class="text-sm text-zinc-700">Saint-Amarin</span>
+                            <span
+                                class="ml-auto text-[10px] bg-thur-50 text-thur-600 font-medium px-2 py-0.5 rounded-full">Base</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-zinc-100">
+                            <span class="iconify w-4 h-4 text-thur-400" data-icon="lucide:map-pin"></span>
+                            <span class="text-sm text-zinc-700">Malmerspach · Moosch · Mitzach · Storckensohn</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-zinc-100">
+                            <span class="iconify w-4 h-4 text-thur-400" data-icon="lucide:map-pin"></span>
+                            <span class="text-sm text-zinc-700">Husseren-Wesserling · Ranspach · Fellering</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-zinc-100">
+                            <span class="iconify w-4 h-4 text-thur-400" data-icon="lucide:map-pin"></span>
+                            <span class="text-sm text-zinc-700">Thann · Cernay · Wintzenheim</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-zinc-100">
+                            <span class="iconify w-4 h-4 text-zinc-300" data-icon="lucide:map-pin"></span>
+                            <span class="text-sm text-zinc-500">Mulhouse et environs</span>
+                            <span
+                                class="ml-auto text-[10px] bg-zinc-50 text-zinc-400 font-medium px-2 py-0.5 rounded-full">Sur
+                                devis</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 mt-6 text-xs text-zinc-400">
+                        <span class="iconify w-4 h-4" data-icon="lucide:info"></span>Déplacement offert dans un rayon de
+                        20 km autour de Saint-Amarin
+                    </div>
+                </div>
+                <div>
+                    <div class="bg-white rounded-2xl p-6 md:p-8 border border-zinc-100 shadow-lg shadow-zinc-900/5">
+                        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                            <path
+                                d="M0 280 Q50 180 100 220 Q130 160 180 200 Q210 140 260 190 Q290 130 340 180 Q370 150 400 170 L400 400 L0 400Z"
+                                fill="#f0f7ed" />
+                            <path
+                                d="M0 300 Q60 230 120 260 Q160 200 220 250 Q260 190 320 230 Q360 200 400 220 L400 400 L0 400Z"
+                                fill="#dcedd4" />
+                            <path
+                                d="M160 340 Q170 310 180 290 Q190 270 200 265 Q220 255 240 260 Q260 265 280 250 Q300 235 310 240 Q330 245 340 230"
+                                stroke="#7eb952" stroke-width="2.5" stroke-linecap="round" fill="none"
+                                stroke-dasharray="6 4" />
+                            <circle cx="200" cy="268" r="8" fill="#4f862e" opacity="0.15">
+                                <animate attributeName="r" values="8;14;8" dur="3s" repeatCount="indefinite" />
+                                <animate attributeName="opacity" values="0.15;0.05;0.15" dur="3s"
+                                    repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="200" cy="268" r="5" fill="#4f862e" />
+                            <text x="200" y="256" text-anchor="middle" font-size="9" font-weight="600" fill="#1e3515"
+                                font-family="Inter,sans-serif">Saint-Amarin</text>
+                            <circle cx="175" cy="285" r="3" fill="#8fbe73" /><text x="175" y="298" text-anchor="middle"
+                                font-size="7" fill="#325320" font-family="Inter,sans-serif">Moosch</text>
+                            <circle cx="155" cy="300" r="3" fill="#8fbe73" /><text x="155" y="313" text-anchor="middle"
+                                font-size="7" fill="#325320" font-family="Inter,sans-serif">Malmerspach</text>
+                            <circle cx="225" cy="258" r="3" fill="#8fbe73" /><text x="225" y="250" text-anchor="middle"
+                                font-size="7" fill="#325320" font-family="Inter,sans-serif">Ranspach</text>
+                            <circle cx="245" cy="255" r="3" fill="#8fbe73" /><text x="245" y="247" text-anchor="middle"
+                                font-size="7" fill="#325320" font-family="Inter,sans-serif">Fellering</text>
+                            <circle cx="140" cy="320" r="3" fill="#b9d9a9" /><text x="140" y="333" text-anchor="middle"
+                                font-size="7" fill="#3d6b24" font-family="Inter,sans-serif">Husseren-W.</text>
+                            <circle cx="115" cy="340" r="3" fill="#b9d9a9" /><text x="115" y="353" text-anchor="middle"
+                                font-size="7" fill="#3d6b24" font-family="Inter,sans-serif">Thann</text>
+                            <circle cx="85" cy="355" r="3" fill="#dcedd4" /><text x="85" y="368" text-anchor="middle"
+                                font-size="7" fill="#6da34b" font-family="Inter,sans-serif">Cernay</text>
+                            <circle cx="50" cy="375" r="2.5" fill="#dcedd4" stroke="#b9d9a9" stroke-width="1" /><text
+                                x="50" y="388" text-anchor="middle" font-size="6" fill="#8fbe73"
+                                font-family="Inter,sans-serif">Mulhouse</text>
+                            <circle cx="200" cy="268" r="70" fill="none" stroke="#4f862e" stroke-width="1"
+                                stroke-dasharray="4 4" opacity="0.3" />
+                            <text x="265" y="220" font-size="7" fill="#4f862e" opacity="0.5"
+                                font-family="Inter,sans-serif">≈ 20 km</text>
+                            <g transform="translate(355,40)">
+                                <circle cx="0" cy="0" r="18" fill="white" stroke="#e4e4e7" stroke-width="0.5" /><text
+                                    x="0" y="-7" text-anchor="middle" font-size="8" font-weight="600" fill="#4f862e"
+                                    font-family="Inter,sans-serif">N</text>
+                                <path d="M0 -3 L2 3 L0 1 L-2 3Z" fill="#4f862e" />
+                            </g>
+                        </svg>
+                        <div class="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-zinc-100">
+                            <div class="flex items-center gap-1.5"><span
+                                    class="w-2.5 h-2.5 bg-thur-500 rounded-full"></span><span
+                                    class="text-[10px] text-zinc-500">Base</span></div>
+                            <div class="flex items-center gap-1.5"><span
+                                    class="w-2.5 h-2.5 bg-thur-300 rounded-full"></span><span
+                                    class="text-[10px] text-zinc-500">Proximité</span></div>
+                            <div class="flex items-center gap-1.5"><span
+                                    class="w-2.5 h-2.5 bg-thur-200 rounded-full"></span><span
+                                    class="text-[10px] text-zinc-500">Sur devis</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PROCESS ========== -->
+    <section class="py-20 md:py-32">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <div
+                    class="inline-flex items-center gap-2 text-thur-600 text-xs font-semibold uppercase tracking-[0.12em] mb-4">
+                    <span class="w-6 h-px bg-thur-400"></span>Comment ça marche<span
+                        class="w-6 h-px bg-thur-400"></span>
+                </div>
+                <h2 class="text-2xl md:text-4xl font-semibold tracking-tight">Simple comme bonjour</h2>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto bg-thur-50 rounded-2xl flex items-center justify-center mb-4"><span
+                            class="text-thur-600 font-semibold text-sm">01</span></div>
+                    <h3 class="text-sm font-semibold mb-2">On discute</h3>
+                    <p class="text-xs text-zinc-500 leading-relaxed">Vous m'expliquez votre besoin, par téléphone, par
+                        mail ou autour d'un café. C'est gratuit et sans engagement.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto bg-thur-50 rounded-2xl flex items-center justify-center mb-4"><span
+                            class="text-thur-600 font-semibold text-sm">02</span></div>
+                    <h3 class="text-sm font-semibold mb-2">Je propose</h3>
+                    <p class="text-xs text-zinc-500 leading-relaxed">Je vous envoie un devis clair et détaillé. Pas de
+                        surprise, pas de jargon technique. Vous savez exactement ce que vous payez.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto bg-thur-50 rounded-2xl flex items-center justify-center mb-4"><span
+                            class="text-thur-600 font-semibold text-sm">03</span></div>
+                    <h3 class="text-sm font-semibold mb-2">Je réalise</h3>
+                    <p class="text-xs text-zinc-500 leading-relaxed">Je me mets au travail, avec des échanges réguliers
+                        pour m'assurer que le résultat correspond à vos attentes.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto bg-thur-50 rounded-2xl flex items-center justify-center mb-4"><span
+                            class="text-thur-600 font-semibold text-sm">04</span></div>
+                    <h3 class="text-sm font-semibold mb-2">Je reste là</h3>
+                    <p class="text-xs text-zinc-500 leading-relaxed">Livré ! Mais je ne disparais pas. Maintenance,
+                        suivi, petites modif — je reste disponible après la livraison.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RÉALISATIONS ========== -->
+    <section id="realisations" class="py-20 md:py-32 bg-zinc-50/50">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+                <div>
+                    <div
+                        class="inline-flex items-center gap-2 text-thur-600 text-xs font-semibold uppercase tracking-[0.12em] mb-4">
+                        <span class="w-6 h-px bg-thur-400"></span>Réalisations
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-semibold tracking-tight">Ils m'ont fait confiance</h2>
+                </div>
+                <p class="text-sm text-zinc-500 mt-4 md:mt-0 max-w-sm">Chaque projet est unique. Voici quelques exemples
+                    de ce que je peux accomplir pour vous.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div
+                    class="group bg-white rounded-2xl overflow-hidden border border-zinc-100 hover:shadow-lg hover:shadow-zinc-900/5 transition-all duration-300">
+                    <div class="aspect-[16/10] bg-zinc-100 overflow-hidden"><img
+                            src="https://picsum.photos/seed/mountain-gite-web/600/375.jpg" alt="Site web Gîte"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-3"><span
+                                class="text-[10px] font-medium bg-thur-50 text-thur-600 px-2 py-0.5 rounded-full">Site
+                                web</span><span
+                                class="text-[10px] font-medium bg-zinc-50 text-zinc-500 px-2 py-0.5 rounded-full">Gîte</span>
+                        </div>
+                        <h3 class="text-sm font-semibold mb-1">Gîte du Petit Ballon</h3>
+                        <p class="text-xs text-zinc-500 leading-relaxed">Site vitrine avec système de réservation pour
+                            un gîte de montagne à Oberbruck.</p>
+                    </div>
+                </div>
+                <div
+                    class="group bg-white rounded-2xl overflow-hidden border border-zinc-100 hover:shadow-lg hover:shadow-zinc-900/5 transition-all duration-300">
+                    <div class="aspect-[16/10] bg-zinc-100 overflow-hidden"><img
+                            src="https://picsum.photos/seed/artisan-bakery-brand/600/375.jpg" alt="Identité visuelle"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-3"><span
+                                class="text-[10px] font-medium bg-thur-50 text-thur-600 px-2 py-0.5 rounded-full">Design</span><span
+                                class="text-[10px] font-medium bg-zinc-50 text-zinc-500 px-2 py-0.5 rounded-full">Identité</span>
+                        </div>
+                        <h3 class="text-sm font-semibold mb-1">Boulangerie Alsacienne</h3>
+                        <p class="text-xs text-zinc-500 leading-relaxed">Logo, charte graphique et supports print pour
+                            une boulangerie artisanale de la vallée.</p>
+                    </div>
+                </div>
+                <div
+                    class="group bg-white rounded-2xl overflow-hidden border border-zinc-100 hover:shadow-lg hover:shadow-zinc-900/5 transition-all duration-300">
+                    <div class="aspect-[16/10] bg-zinc-100 overflow-hidden"><img
+                            src="https://picsum.photos/seed/computer-repair-home/600/375.jpg" alt="Assistance info"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-3"><span
+                                class="text-[10px] font-medium bg-thur-50 text-thur-600 px-2 py-0.5 rounded-full">Assistance</span><span
+                                class="text-[10px] font-medium bg-zinc-50 text-zinc-500 px-2 py-0.5 rounded-full">Domicile</span>
+                        </div>
+                        <h3 class="text-sm font-semibold mb-1">Mairie de Mitzach</h3>
+                        <p class="text-xs text-zinc-500 leading-relaxed">Mise en réseau, installation de postes et
+                            formation du personnel municipal.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 bg-white rounded-2xl p-8 md:p-12 border border-zinc-100 max-w-3xl mx-auto text-center">
+                <span class="iconify w-8 h-8 text-thur-200 mx-auto mb-4" data-icon="lucide:quote"></span>
+                <blockquote class="text-base md:text-lg text-zinc-700 leading-relaxed font-light italic">« Jordan a
+                    refait notre site web et s'est occupé de nos ordinateurs. Le tout avec le sourire et une patience
+                    incroyable. Enfin quelqu'un qui parle notre langue ! »</blockquote>
+                <div class="mt-6">
+                    <p class="text-sm font-semibold text-zinc-900">Marie L.</p>
+                    <p class="text-xs text-zinc-400">Gérante de gîte · Husseren-Wesserling</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="py-20 md:py-28 relative overflow-hidden">
+        <div class="absolute inset-0 bg-zinc-900"></div>
+        <div class="absolute inset-0 opacity-10"
+            style="background-image:radial-gradient(rgba(255,255,255,0.3) 1px,transparent 1px);background-size:20px 20px">
+        </div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-thur-600/10 rounded-full blur-3xl">
+        </div>
+        <div class="relative max-w-3xl mx-auto px-4 md:px-6 text-center">
+            <h2 class="text-2xl md:text-4xl font-semibold tracking-tight text-white mb-4">Un projet en tête ?<br><span
+                    class="text-thur-400">On en discute ?</span></h2>
+            <p class="text-sm md:text-base text-zinc-400 mb-8 max-w-lg mx-auto">Que ce soit pour un site web, un logo,
+                ou un ordinateur capricieux, le premier échange est toujours gratuit. Contactez-moi, je vous réponds
+                sous 24h.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a href="#contact"
+                    class="inline-flex items-center gap-2 bg-thur-500 hover:bg-thur-600 text-white text-sm font-medium px-7 py-3.5 rounded-full transition-colors duration-150 shadow-lg shadow-thur-900/20"><span
+                        class="iconify w-4 h-4" data-icon="lucide:message-circle"></span>Demander un devis gratuit</a>
+                <a href="tel:+33600000000"
+                    class="inline-flex items-center gap-2 text-zinc-300 hover:text-white text-sm font-medium px-5 py-3.5 rounded-full border border-zinc-700 hover:border-zinc-500 transition-all duration-150"><span
+                        class="iconify w-4 h-4" data-icon="lucide:phone"></span>06 00 00 00 00</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section id="contact" class="py-20 md:py-32">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-20">
+                <div>
+                    <div
+                        class="inline-flex items-center gap-2 text-thur-600 text-xs font-semibold uppercase tracking-[0.12em] mb-4">
+                        <span class="w-6 h-px bg-thur-400"></span>Contact
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-semibold tracking-tight mb-4">Parlons de<br>votre projet</h2>
+                    <p class="text-sm md:text-base text-zinc-500 leading-relaxed mb-10">Remplissez le formulaire ou
+                        contactez-moi directement. Je m'engage à vous répondre sous 24 heures, avec une proposition
+                        claire et adaptée.</p>
+                    <div class="space-y-5">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 bg-thur-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="iconify w-5 h-5 text-thur-600" data-icon="lucide:mail"></span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-zinc-400 mb-0.5">Email</p>
+                                <p class="text-sm font-medium text-zinc-900">contact@thurconnect.fr</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 bg-thur-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="iconify w-5 h-5 text-thur-600" data-icon="lucide:phone"></span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-zinc-400 mb-0.5">Téléphone</p>
+                                <p class="text-sm font-medium text-zinc-900">06 00 00 00 00</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 bg-thur-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="iconify w-5 h-5 text-thur-600" data-icon="lucide:map-pin"></span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-zinc-400 mb-0.5">Adresse</p>
+                                <p class="text-sm font-medium text-zinc-900">Saint-Amarin, 68550</p>
+                                <p class="text-xs text-zinc-400">Vallée de la Thur · Haut-Rhin</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 bg-thur-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="iconify w-5 h-5 text-thur-600" data-icon="lucide:clock"></span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-zinc-400 mb-0.5">Horaires</p>
+                                <p class="text-sm font-medium text-zinc-900">Lun – Ven : 9h – 18h</p>
+                                <p class="text-xs text-zinc-400">Sam : sur rendez-vous</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 mt-10 pt-8 border-t border-zinc-100">
+                        <a href="#"
+                            class="w-9 h-9 bg-zinc-50 hover:bg-thur-50 rounded-lg flex items-center justify-center transition-colors duration-150"><span
+                                class="iconify w-4 h-4 text-zinc-500" data-icon="lucide:facebook"></span></a>
+                        <a href="#"
+                            class="w-9 h-9 bg-zinc-50 hover:bg-thur-50 rounded-lg flex items-center justify-center transition-colors duration-150"><span
+                                class="iconify w-4 h-4 text-zinc-500" data-icon="lucide:instagram"></span></a>
+                        <a href="#"
+                            class="w-9 h-9 bg-zinc-50 hover:bg-thur-50 rounded-lg flex items-center justify-center transition-colors duration-150"><span
+                                class="iconify w-4 h-4 text-zinc-500" data-icon="lucide:linkedin"></span></a>
+                    </div>
+                </div>
+                <div>
+                    <form id="contactForm" class="bg-zinc-50 rounded-2xl p-6 md:p-8 border border-zinc-100"
+                        onsubmit="handleSubmit(event)">
+                        <div class="space-y-5">
+                            <div class="grid sm:grid-cols-2 gap-5">
+                                <div><label for="prenom"
+                                        class="block text-xs font-medium text-zinc-700 mb-1.5">Prénom</label><input
+                                        type="text" id="prenom" name="prenom" required
+                                        class="w-full px-4 py-2.5 text-sm bg-white border border-zinc-200 rounded-xl focus:outline-none focus:border-thur-400 focus:ring-2 focus:ring-thur-50 transition-all placeholder:text-zinc-300"
+                                        placeholder="Votre prénom"></div>
+                                <div><label for="nom"
+                                        class="block text-xs font-medium text-zinc-700 mb-1.5">Nom</label><input
+                                        type="text" id="nom" name="nom" required
+                                        class="w-full px-4 py-2.5 text-sm bg-white border border-zinc-200 rounded-xl focus:outline-none focus:border-thur-400 focus:ring-2 focus:ring-thur-50 transition-all placeholder:text-zinc-300"
+                                        placeholder="Votre nom"></div>
+                            </div>
+                            <div><label for="email"
+                                    class="block text-xs font-medium text-zinc-700 mb-1.5">Email</label><input
+                                    type="email" id="email" name="email" required
+                                    class="w-full px-4 py-2.5 text-sm bg-white border border-zinc-200 rounded-xl focus:outline-none focus:border-thur-400 focus:ring-2 focus:ring-thur-50 transition-all placeholder:text-zinc-300"
+                                    placeholder="votre@email.fr"></div>
+                            <div><label for="telephone"
+                                    class="block text-xs font-medium text-zinc-700 mb-1.5">Téléphone</label><input
+                                    type="tel" id="telephone" name="telephone"
+                                    class="w-full px-4 py-2.5 text-sm bg-white border border-zinc-200 rounded-xl focus:outline-none focus:border-thur-400 focus:ring-2 focus:ring-thur-50 transition-all placeholder:text-zinc-300"
+                                    placeholder="06 00 00 00 00"></div>
+                            <div><label for="service" class="block text-xs font-medium text-zinc-700 mb-1.5">Vous êtes
+                                    intéressé(e) par</label><select id="service" name="service"
+                                    class="w-full px-4 py-2.5 text-sm bg-white border border-zinc-200 rounded-xl focus:outline-none focus:border-thur-400 focus:ring-2 focus:ring-thur-50 transition-all text-zinc-500">
+                                    <option value="">Choisir un service…</option>
+                                    <option value="web">Création de site web</option>
+                                    <option value="design">Design & Graphisme</option>
+                                    <option value="assistance">Assistance informatique</option>
+                                    <option value="plusieurs">Plusieurs services</option>
+                                    <option value="autre">Autre</option>
+                                </select></div>
+                            <div><label for="message" class="block text-xs font-medium text-zinc-700 mb-1.5">Votre
+                                    message</label><textarea id="message" name="message" rows="4" required
+                                    class="w-full px-4 py-2.5 text-sm bg-white border border-zinc-200 rounded-xl focus:outline-none focus:border-thur-400 focus:ring-2 focus:ring-thur-50 transition-all resize-none placeholder:text-zinc-300"
+                                    placeholder="Décrivez brièvement votre projet ou votre besoin…"></textarea></div>
+                            <button type="submit"
+                                class="w-full inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-800 text-white text-sm font-medium px-7 py-3.5 rounded-xl transition-colors duration-150 shadow-lg shadow-zinc-900/10"><span
+                                    class="iconify w-4 h-4" data-icon="lucide:send"></span>Envoyer mon message</button>
+                            <p class="text-[10px] text-zinc-400 text-center">En envoyant ce formulaire, vous acceptez
+                                d'être recontacté(e). Vos données restent confidentielles.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-zinc-900 text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="grid md:grid-cols-4 gap-10 md:gap-8 pb-10 border-b border-zinc-800">
+                <div class="md:col-span-2">
+                    <a href="#hero" class="flex items-center gap-2.5 mb-4">
+                        <svg width="30" height="30" viewBox="0 0 36 36" fill="none">
+                            <path d="M2 30 L12 10 L17 20" stroke="#7eb952" stroke-width="2.2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M17 20 L22 12 L34 30" stroke="#7eb952" stroke-width="2.2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M14 24 Q18 28 22 24" stroke="#4f862e" stroke-width="1.8" stroke-linecap="round"
+                                fill="none" />
+                            <circle cx="18" cy="8" r="2" fill="#7eb952" />
+                        </svg>
+                        <div class="flex flex-col leading-none"><span class="text-sm font-semibold text-white">L'Agence
+                                de Scott
+                            </span><span class="text-[8px] uppercase tracking-[0.15em] text-thur-400 font-medium">Vallée
+                                de la
+                                Thur</span></div>
+                    </a>
+                    <p class="text-xs text-zinc-400 leading-relaxed max-w-sm mb-6">Création de sites web, design
+                        graphique et assistance informatique à Saint-Amarin et dans toute la vallée de la Thur. Le
+                        digital, à taille humaine.</p>
+                    <div class="flex items-center gap-3">
+                        <a href="#"
+                            class="w-8 h-8 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex items-center justify-center transition-colors"><span
+                                class="iconify w-3.5 h-3.5 text-zinc-400" data-icon="lucide:facebook"></span></a>
+                        <a href="#"
+                            class="w-8 h-8 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex items-center justify-center transition-colors"><span
+                                class="iconify w-3.5 h-3.5 text-zinc-400" data-icon="lucide:instagram"></span></a>
+                        <a href="#"
+                            class="w-8 h-8 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex items-center justify-center transition-colors"><span
+                                class="iconify w-3.5 h-3.5 text-zinc-400" data-icon="lucide:linkedin"></span></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-4">Navigation</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#services"
+                                class="text-xs text-zinc-400 hover:text-white transition-colors">Services</a></li>
+                        <li><a href="#apropos" class="text-xs text-zinc-400 hover:text-white transition-colors">À
+                                propos</a></li>
+                        <li><a href="#zone" class="text-xs text-zinc-400 hover:text-white transition-colors">Zone
+                                d'intervention</a></li>
+                        <li><a href="#realisations"
+                                class="text-xs text-zinc-400 hover:text-white transition-colors">Réalisations</a></li>
+                        <li><a href="#contact"
+                                class="text-xs text-zinc-400 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-4">Services</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#services"
+                                class="text-xs text-zinc-400 hover:text-white transition-colors">Création de sites
+                                web</a></li>
+                        <li><a href="#services" class="text-xs text-zinc-400 hover:text-white transition-colors">Design
+                                & Graphisme</a></li>
+                        <li><a href="#services"
+                                class="text-xs text-zinc-400 hover:text-white transition-colors">Assistance
+                                informatique</a></li>
+                        <li><a href="#services"
+                                class="text-xs text-zinc-400 hover:text-white transition-colors">Dépannage à
+                                domicile</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-between pt-8 gap-4">
+                <p class="text-[11px] text-zinc-500">© 2025 L'Agence de Scott. Tous droits réservés. SIRET : XXX XXX XXX
+                    XXXXX</p>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors">Mentions
+                        légales</a>
+                    <a href="#" class="text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors">Politique de
+                        confidentialité</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
+        <div class="bg-zinc-900 text-white rounded-2xl px-6 py-4 shadow-2xl shadow-zinc-900/20 flex items-center gap-3">
+            <span class="iconify w-5 h-5 text-thur-400" data-icon="lucide:check-circle-2"></span>
+            <div>
+                <p class="text-sm font-medium">Message envoyé !</p>
+                <p class="text-xs text-zinc-400">Je vous réponds sous 24h.</p>
+            </div>
+            <button onclick="hideToast()" class="ml-4 text-zinc-400 hover:text-white transition-colors"><span
+                    class="iconify w-4 h-4" data-icon="lucide:x"></span></button>
+        </div>
+    </div>
+
+    <!-- BACK TO TOP -->
+    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        class="fixed bottom-6 left-6 z-50 w-10 h-10 bg-white border border-zinc-200 rounded-xl shadow-lg flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:border-zinc-300 transition-all duration-200 opacity-0 pointer-events-none">
+        <span class="iconify w-4 h-4" data-icon="lucide:arrow-up"></span>
+    </button>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById('mobileMenu');
+            var icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            icon.setAttribute('data-icon', menu.classList.contains('hidden') ? 'lucide:menu' : 'lucide:x');
+        }
+        window.addEventListener('scroll', function () {
+            var y = window.pageYOffset;
+            if (y > 10) { document.getElementById('navbar').classList.add('shadow-sm'); }
+            else { document.getElementById('navbar').classList.remove('shadow-sm'); }
+            var btn = document.getElementById('backToTop');
+            if (y > 500) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+            else { btn.style.opacity = '0'; btn.style.pointerEvents = 'none'; }
+        });
+        function handleSubmit(e) {
+            e.preventDefault();
+            var form = e.target, btn = form.querySelector('button[type="submit"]'), orig = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="animate-spin w-4 h-4 inline" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Envoi en cours…';
+            setTimeout(function () { btn.disabled = false; btn.innerHTML = orig; form.reset(); showToast(); }, 1500);
+        }
+        function showToast() { document.getElementById('toast').classList.remove('hidden'); setTimeout(hideToast, 5000); }
+        function hideToast() { document.getElementById('toast').classList.add('hidden'); }
+        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                e.preventDefault();
+                var t = document.querySelector(this.getAttribute('href'));
+                if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth' });
+            });
+        });
+        // Force video play on mobile (iOS Safari sometimes blocks autoplay)
+        document.addEventListener('DOMContentLoaded', function () {
+            var video = document.getElementById('heroVideo');
+            if (video) {
+                video.play().catch(function () {
+                    // Autoplay blocked, try again on first touch
+                    document.body.addEventListener('touchstart', function playOnTouch() {
+                        video.play().catch(function () { });
+                        document.body.removeEventListener('touchstart', playOnTouch);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

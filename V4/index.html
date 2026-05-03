@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agence de Scott — Développement Web, Graphisme & Assistance Informatique | Saint-Amarin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF9F6',
+                        savor: '#F3EFE0',
+                        accent: '#C46245',
+                        'accent-dark': '#A04530',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #C46245, #e8926e);
+            z-index: 9999;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(196, 98, 69, 0.5);
+        }
+
+        #main-nav {
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        #main-nav .nav-link {
+            transition: color 0.4s ease;
+        }
+
+        #main-nav.at-top .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        #main-nav.at-top .nav-link:hover {
+            color: #C46245;
+        }
+
+        #main-nav.scrolled .nav-link {
+            color: #78716c;
+        }
+
+        #main-nav.scrolled .nav-link:hover {
+            color: #C46245;
+        }
+
+        #burger-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        #burger-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #burger-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            background: #1c1917;
+            z-index: 201;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        #burger-panel.open {
+            transform: translateX(0);
+        }
+
+        .burger-close {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            transition: background 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .burger-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .burger-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .burger-link:hover {
+            padding-left: 0.5rem;
+        }
+
+        .burger-link:hover .burger-link-num {
+            color: #C46245;
+        }
+
+        .burger-link:hover .burger-link-text {
+            color: #C46245;
+        }
+
+        .burger-link-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.2);
+            min-width: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .burger-link-text {
+            font-size: 1.75rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .delay-1 {
+            transition-delay: 0.08s;
+        }
+
+        .delay-2 {
+            transition-delay: 0.16s;
+        }
+
+        .delay-3 {
+            transition-delay: 0.24s;
+        }
+
+        .delay-4 {
+            transition-delay: 0.32s;
+        }
+
+        .delay-5 {
+            transition-delay: 0.4s;
+        }
+
+        .chapter-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(196, 98, 69, 0.15);
+            position: absolute;
+            top: -0.5rem;
+            left: -0.5rem;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .deco-line {
+            width: 60px;
+            height: 2px;
+            background: #C46245;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .deco-line.active {
+            width: 120px;
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background: #C46245;
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .side-nav {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            align-items: flex-end;
+        }
+
+        .side-nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid rgba(196, 98, 69, 0.3);
+            background: transparent;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .side-nav-dot.active {
+            background: #C46245;
+            border-color: #C46245;
+            box-shadow: 0 0 10px rgba(196, 98, 69, 0.4);
+        }
+
+        .side-nav-dot:hover {
+            border-color: #C46245;
+        }
+
+        .side-nav-label {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #C46245;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .side-nav-dot:hover .side-nav-label,
+        .side-nav-dot.active .side-nav-label {
+            opacity: 1;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .float-delay {
+            animation: float 6s ease-in-out 2s infinite;
+        }
+
+        .card-shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-shine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: skewX(-25deg);
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+
+        .card-shine:hover::before {
+            left: 125%;
+        }
+
+        @keyframes scrollDown {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            60% {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+        }
+
+        .scroll-indicator {
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+
+        .quote-mark {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: rgba(196, 98, 69, 0.15);
+        }
+
+        .gallery-item img {
+            transition: transform 0.7s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.06);
+        }
+
+        @media (max-width: 768px) {
+            .side-nav {
+                right: 0.75rem;
+                gap: 1rem;
+            }
+
+            .side-nav-label {
+                display: none;
+            }
+
+            .chapter-num {
+                font-size: 4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .side-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-cream text-stone-900 overflow-x-hidden">
+
+    <div id="progress-bar" style="width: 0%;"></div>
+
+    <!-- LOGO — Version fond transparent -->
+
+    <!-- Burger -->
+    <div id="burger-overlay"></div>
+    <div id="burger-panel">
+        <div class="p-6 flex items-center justify-between border-b border-white/5">
+            <a href="#hero" class="flex items-center">
+                <img src="https://z-cdn-media.chatglm.cn/files/f2cbc85d-caad-46a5-afdb-0bb7ea3f2200.png?auth_key=1877635009-fe20a6fa8d424de8a749fa647d938d10-0-55887186b48f6a282c9dafb80286998e"
+                    alt="L'Agence de Scott" class="h-12 w-auto object-contain">
+            </a>
+            <button class="burger-close" id="burger-close"><span class="iconify w-5 h-5"
+                    data-icon="lucide:x"></span></button>
+        </div>
+        <div class="flex-1 px-8 pt-8 pb-4">
+            <nav class="flex flex-col">
+                <a class="burger-link" data-href="#hero"><span class="burger-link-num">01</span><span
+                        class="burger-link-text">Accueil</span></a>
+                <a class="burger-link" data-href="#craft"><span class="burger-link-num">02</span><span
+                        class="burger-link-text">Services</span></a>
+                <a class="burger-link" data-href="#origin"><span class="burger-link-num">03</span><span
+                        class="burger-link-text">À propos</span></a>
+                <a class="burger-link" data-href="#territory"><span class="burger-link-num">04</span><span
+                        class="burger-link-text">Territoire</span></a>
+                <a class="burger-link" data-href="#story"><span class="burger-link-num">05</span><span
+                        class="burger-link-text">Contact</span></a>
+            </nav>
+        </div>
+        <div class="px-8 pb-4">
+            <a href="#story"
+                class="burger-cta block w-full bg-accent hover:bg-accent-dark text-white text-center font-medium py-4 rounded-xl transition-all duration-300 text-sm tracking-wide">Demander
+                un devis</a>
+        </div>
+        <div class="px-8 pb-8 pt-4 border-t border-white/5">
+            <p class="text-white/20 text-xs tracking-[0.25em] uppercase text-center">Saint-Amarin · Vallée de la Thur
+            </p>
+        </div>
+    </div>
+
+    <!-- Side Nav -->
+    <nav class="side-nav" id="side-nav">
+        <div class="side-nav-dot active" data-section="hero"><span class="side-nav-label">Prologue</span></div>
+        <div class="side-nav-dot" data-section="origin"><span class="side-nav-label">Chapitre I</span></div>
+        <div class="side-nav-dot" data-section="craft"><span class="side-nav-label">Chapitre II</span></div>
+        <div class="side-nav-dot" data-section="territory"><span class="side-nav-label">Chapitre III</span></div>
+        <div class="side-nav-dot" data-section="story"><span class="side-nav-label">Épilogue</span></div>
+    </nav>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 at-top" id="main-nav">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#hero" class="flex items-center group">
+                <img src="https://z-cdn-media.chatglm.cn/files/f2cbc85d-caad-46a5-afdb-0bb7ea3f2200.png?auth_key=1877635009-fe20a6fa8d424de8a749fa647d938d10-0-55887186b48f6a282c9dafb80286998e"
+                    alt="L'Agence de Scott"
+                    class="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+            </a>
+            <div class="hidden lg:flex items-center gap-8">
+                <a href="#origin" class="nav-link text-sm transition-colors duration-300">Origine</a>
+                <a href="#craft" class="nav-link text-sm transition-colors duration-300">Savoir-faire</a>
+                <a href="#territory" class="nav-link text-sm transition-colors duration-300">Territoire</a>
+                <a href="#story"
+                    class="bg-accent hover:bg-accent-dark text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-accent/20">Écrivons
+                    votre histoire</a>
+            </div>
+            <button id="burger-open"
+                class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl transition-colors">
+                <span class="iconify w-5 h-5" data-icon="lucide:menu" id="burger-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://picsum.photos/seed/misty-forest-valley-dawn/1920/1080.jpg" alt="Vallée de Saint-Amarin"
+                class="w-full h-full object-cover scale-105" style="transform-origin: center 30%;" id="hero-img">
+            <div class="absolute inset-0 bg-gradient-to-b from-stone-900/70 via-stone-900/50 to-stone-900/85"></div>
+        </div>
+        <div class="absolute top-1/4 left-[10%] w-2 h-2 bg-accent/40 rounded-full float"></div>
+        <div class="absolute top-1/3 right-[15%] w-3 h-3 bg-accent/30 rounded-full float-delay"></div>
+        <div class="relative z-10 text-center px-6 max-w-4xl">
+            <div class="reveal flex justify-center mb-8">
+                <img src="https://z-cdn-media.chatglm.cn/files/f2cbc85d-caad-46a5-afdb-0bb7ea3f2200.png?auth_key=1877635009-fe20a6fa8d424de8a749fa647d938d10-0-55887186b48f6a282c9dafb80286998e"
+                    alt="L'Agence de Scott" class="h-36 md:h-52 w-auto object-contain drop-shadow-2xl">
+            </div>
+            <h1
+                class="font-serif text-white text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.1] tracking-tight mb-6">
+                <span class="reveal delay-1 block">Il était une fois</span>
+                <span class="reveal delay-2 block mt-2">
+                    <span class="text-accent" id="typewriter-text"></span><span class="typewriter-cursor"></span>
+                </span>
+            </h1>
+            <p class="reveal delay-3 text-stone-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8">
+                Développement web, graphisme & assistance informatique à domicile dans toute la vallée.
+            </p>
+            <div class="reveal delay-4">
+                <a href="#origin"
+                    class="inline-flex items-center gap-2 bg-accent hover:bg-accent-dark text-white font-medium px-8 py-4 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-accent/30 group">
+                    Commencer l'histoire
+                    <span class="iconify w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                        data-icon="lucide:arrow-down"></span>
+                </a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+            <span class="text-white/40 text-xs tracking-[0.2em] uppercase">Scroll</span>
+            <div class="w-px h-10 bg-gradient-to-b from-white/40 to-transparent scroll-indicator"></div>
+        </div>
+    </section>
+
+    <!-- ORIGINE -->
+    <section id="origin" class="relative py-16 md:py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="reveal mb-10 md:mb-14">
+                <div class="flex items-center gap-4">
+                    <div class="deco-line"></div><span
+                        class="text-xs font-semibold tracking-[0.3em] uppercase text-accent">Chapitre I</span>
+                </div>
+                <h2 class="font-serif text-4xl md:text-6xl font-medium tracking-tight mt-4">L'origine</h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+                <div class="relative reveal-left">
+                    <div class="rounded-3xl overflow-hidden shadow-2xl"><img
+                            src="https://picsum.photos/seed/cozy-creative-office-warm/800/1000.jpg"
+                            alt="Jordan Schmidt au travail"
+                            class="w-full aspect-[4/5] object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div
+                        class="absolute -bottom-3 -right-3 md:bottom-6 md:-right-6 bg-white rounded-2xl shadow-xl p-3 float-delay">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center"><span
+                                    class="iconify w-4 h-4 text-accent" data-icon="lucide:map-pin"></span></div>
+                            <div>
+                                <p class="text-xs font-medium">Basé à</p>
+                                <p class="text-[10px] text-stone-500">Saint-Amarin</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-3 -left-3 w-14 h-14 border-2 border-accent/20 rounded-2xl"></div>
+                </div>
+                <div class="relative">
+                    <span class="chapter-num reveal-scale">01</span>
+                    <div class="relative z-10">
+                        <div class="reveal delay-1"><span class="quote-mark">"</span></div>
+                        <blockquote
+                            class="font-serif text-2xl md:text-3xl leading-relaxed text-stone-800 mb-5 reveal delay-2">
+                            Chaque projet a une histoire. La mienne commence dans la vallée, entre les montagnes et les
+                            écrans.</blockquote>
+                        <p class="text-stone-500 leading-relaxed mb-3 reveal delay-3">Je m'appelle <strong
+                                class="text-stone-800">Jordan Schmidt</strong>. Derrière l'Agence de Scott, il y a une
+                            passion : celle de créer, de résoudre et d'accompagner. Du site web qui donne vie à votre
+                            identité, au logo qui raconte vos valeurs, jusqu'à l'assistance informatique qui vous
+                            simplifie le quotidien.</p>
+                        <p class="text-stone-500 leading-relaxed mb-5 reveal delay-4">Ici, pas de grands discours
+                            corporatifs. Juste un savoir-faire authentique, ancré dans un territoire que j'aime, au
+                            service de ceux qui le font vivre.</p>
+                        <div class="reveal delay-5 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-accent/30"><img
+                                    src="https://picsum.photos/seed/portrait-friendly-person/200/200.jpg"
+                                    alt="Jordan Schmidt" class="w-full h-full object-cover"></div>
+                            <div>
+                                <p class="font-medium text-sm">Jordan Schmidt</p>
+                                <p class="text-xs text-stone-400">Fondateur · Agence de Scott</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 md:mt-14">
+                <p class="text-stone-400 text-xs tracking-widest uppercase text-center mb-4 reveal">Créativité &
+                    précision</p>
+                <div class="grid grid-cols-3 gap-2 md:gap-4">
+                    <div
+                        class="reveal delay-1 gallery-item group rounded-xl md:rounded-2xl overflow-hidden shadow-md relative">
+                        <img src="https://picsum.photos/seed/workspace-design-tools-mac/600/400.jpg"
+                            alt="Création graphique" class="w-full aspect-[3/2] object-cover">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <div
+                            class="absolute bottom-2 left-2 md:bottom-3 md:left-3 right-2 md:right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            <p class="text-white text-xs md:text-sm font-medium">Création graphique</p>
+                        </div>
+                    </div>
+                    <div
+                        class="reveal delay-2 gallery-item group rounded-xl md:rounded-2xl overflow-hidden shadow-md relative">
+                        <img src="https://picsum.photos/seed/coding-screen-dark-coffee/600/400.jpg"
+                            alt="Développement web" class="w-full aspect-[3/2] object-cover">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <div
+                            class="absolute bottom-2 left-2 md:bottom-3 md:left-3 right-2 md:right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            <p class="text-white text-xs md:text-sm font-medium">Développement web</p>
+                        </div>
+                    </div>
+                    <div
+                        class="reveal delay-3 gallery-item group rounded-xl md:rounded-2xl overflow-hidden shadow-md relative">
+                        <img src="https://picsum.photos/seed/tech-help-hands-keyboard/600/400.jpg" alt="Assistance"
+                            class="w-full aspect-[3/2] object-cover">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <div
+                            class="absolute bottom-2 left-2 md:bottom-3 md:left-3 right-2 md:right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            <p class="text-white text-xs md:text-sm font-medium">Assistance dépannage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SAVOIR-FAIRE -->
+    <section id="craft" class="relative py-16 md:py-24 px-6 bg-savor">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="reveal mb-10 md:mb-14 text-center">
+                <div class="flex items-center justify-center gap-4 mb-4">
+                    <div class="h-px w-10 bg-accent/40"></div><span
+                        class="text-xs font-semibold tracking-[0.3em] uppercase text-accent">Chapitre II</span>
+                    <div class="h-px w-10 bg-accent/40"></div>
+                </div>
+                <h2 class="font-serif text-4xl md:text-6xl font-medium tracking-tight">Le savoir-faire</h2>
+                <p class="text-stone-500 mt-3 max-w-xl mx-auto leading-relaxed">Trois compétences, un même engagement :
+                    vous accompagner avec exigence et proximité.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-5">
+                <div class="reveal delay-1">
+                    <div
+                        class="card-shine group bg-white rounded-3xl p-3 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-stone-100">
+                        <div class="relative overflow-hidden rounded-2xl"><img
+                                src="https://picsum.photos/seed/coding-laptop-dark-mode/600/400.jpg"
+                                alt="Développement web"
+                                class="w-full aspect-[3/2] object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent"></div>
+                            <div class="absolute bottom-3 left-3"><span
+                                    class="bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">Web</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div
+                                    class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-all duration-300">
+                                    <span
+                                        class="iconify w-4 h-4 text-accent group-hover:text-white transition-colors duration-300"
+                                        data-icon="lucide:code-2"></span></div>
+                                <h3 class="font-serif text-lg font-medium">Développement Web</h3>
+                            </div>
+                            <p class="text-stone-500 text-sm leading-relaxed">Sites vitrines, e-commerce, applications
+                                sur mesure. Chaque ligne de code est pensée pour votre visibilité.</p>
+                            <div class="mt-3 flex flex-wrap gap-1.5"><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">Sites
+                                    vitrines</span><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">E-commerce</span><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">SEO</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal delay-2">
+                    <div
+                        class="card-shine group bg-white rounded-3xl p-3 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-stone-100">
+                        <div class="relative overflow-hidden rounded-2xl"><img
+                                src="https://picsum.photos/seed/colorful-brand-design-art/600/400.jpg" alt="Graphisme"
+                                class="w-full aspect-[3/2] object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent"></div>
+                            <div class="absolute bottom-3 left-3"><span
+                                    class="bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">Design</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div
+                                    class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-all duration-300">
+                                    <span
+                                        class="iconify w-4 h-4 text-accent group-hover:text-white transition-colors duration-300"
+                                        data-icon="lucide:palette"></span></div>
+                                <h3 class="font-serif text-lg font-medium">Graphisme</h3>
+                            </div>
+                            <p class="text-stone-500 text-sm leading-relaxed">Logos, identités visuelles, supports
+                                print. Donnez à votre marque une identité qui parle et qui marque.</p>
+                            <div class="mt-3 flex flex-wrap gap-1.5"><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">Logos</span><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">Identité
+                                    visuelle</span><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">Print</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal delay-3">
+                    <div
+                        class="card-shine group bg-white rounded-3xl p-3 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-stone-100">
+                        <div class="relative overflow-hidden rounded-2xl"><img
+                                src="https://picsum.photos/seed/tech-repair-setup-home/600/400.jpg" alt="Assistance"
+                                class="w-full aspect-[3/2] object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent"></div>
+                            <div class="absolute bottom-3 left-3"><span
+                                    class="bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">Assistance</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div
+                                    class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-all duration-300">
+                                    <span
+                                        class="iconify w-4 h-4 text-accent group-hover:text-white transition-colors duration-300"
+                                        data-icon="lucide:wrench"></span></div>
+                                <h3 class="font-serif text-lg font-medium">Assistance Informatique</h3>
+                            </div>
+                            <p class="text-stone-500 text-sm leading-relaxed">Dépannage, installation, formation. Je me
+                                déplace chez vous dans toute la vallée.</p>
+                            <div class="mt-3 flex flex-wrap gap-1.5"><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">À
+                                    domicile</span><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">Dépannage</span><span
+                                    class="text-xs bg-stone-100 text-stone-600 px-2.5 py-1 rounded-full">Formation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="reveal delay-1 text-center"><span
+                        class="font-serif text-3xl md:text-4xl text-accent font-medium counter" data-target="3">0</span>
+                    <p class="text-xs text-stone-500 mt-1">Expertises</p>
+                </div>
+                <div class="reveal delay-2 text-center"><span
+                        class="font-serif text-3xl md:text-4xl text-accent font-medium">100<span
+                            class="text-lg">%</span></span>
+                    <p class="text-xs text-stone-500 mt-1">Sur mesure</p>
+                </div>
+                <div class="reveal delay-3 text-center"><span
+                        class="font-serif text-3xl md:text-4xl text-accent font-medium">1</span>
+                    <p class="text-xs text-stone-500 mt-1">Interlocuteur unique</p>
+                </div>
+                <div class="reveal delay-4 text-center"><span
+                        class="font-serif text-3xl md:text-4xl text-accent font-medium counter" data-target="1">0</span>
+                    <p class="text-xs text-stone-500 mt-1">Vallée couverte</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TERRITOIRE -->
+    <section id="territory" class="relative py-16 md:py-24 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="reveal mb-10 md:mb-14">
+                <div class="flex items-center gap-4">
+                    <div class="deco-line"></div><span
+                        class="text-xs font-semibold tracking-[0.3em] uppercase text-accent">Chapitre III</span>
+                </div>
+                <h2 class="font-serif text-4xl md:text-6xl font-medium tracking-tight mt-4">Le territoire</h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+                <div class="relative order-2 lg:order-1">
+                    <span class="chapter-num reveal-scale">03</span>
+                    <div class="relative z-10">
+                        <p class="text-stone-500 leading-relaxed mb-3 reveal delay-1">Saint-Amarin, Malmerspach,
+                            Fellering, Kruth, Wildenstein, Oderen, Ranspach, Husseren-Wesserling, Mitzach, Storckensohn…
+                        </p>
+                        <p class="text-stone-500 leading-relaxed mb-5 reveal delay-2">De la plaine aux sommets, l'Agence
+                            de Scott couvre <strong class="text-stone-800">toute la Vallée de la Thur</strong>. Je me
+                            déplace chez vous. Chaque projet, chaque dépannage, chaque création se fait <strong
+                                class="text-stone-800">en personne</strong>.</p>
+                        <div class="reveal delay-3">
+                            <div class="bg-savor rounded-2xl p-4 border border-stone-200/50">
+                                <div class="flex items-start gap-3">
+                                    <div
+                                        class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span class="iconify w-4 h-4 text-accent" data-icon="lucide:home"></span></div>
+                                    <div>
+                                        <h4 class="font-medium text-sm">Intervention à domicile</h4>
+                                        <p class="text-sm text-stone-500">Pas besoin de vous déplacer. C'est moi qui
+                                            viens à vous.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 space-y-3">
+                            <div class="reveal delay-4 flex items-start gap-3">
+                                <div
+                                    class="w-7 h-7 bg-accent rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0 mt-0.5">
+                                    1</div>
+                                <div>
+                                    <h4 class="font-medium text-sm">On discute</h4>
+                                    <p class="text-sm text-stone-500">Vous m'expliquez votre besoin.</p>
+                                </div>
+                            </div>
+                            <div class="reveal delay-4 flex items-start gap-3">
+                                <div
+                                    class="w-7 h-7 bg-accent rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0 mt-0.5">
+                                    2</div>
+                                <div>
+                                    <h4 class="font-medium text-sm">Je propose</h4>
+                                    <p class="text-sm text-stone-500">Un devis clair, sans surprise.</p>
+                                </div>
+                            </div>
+                            <div class="reveal delay-5 flex items-start gap-3">
+                                <div
+                                    class="w-7 h-7 bg-accent rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0 mt-0.5">
+                                    3</div>
+                                <div>
+                                    <h4 class="font-medium text-sm">Je réalise</h4>
+                                    <p class="text-sm text-stone-500">Avec rigueur et créativité.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative order-1 lg:order-2 reveal-right">
+                    <div class="rounded-3xl overflow-hidden shadow-2xl"><img
+                            src="https://picsum.photos/seed/vosges-alpine-village-green/800/1100.jpg" alt="La Vallée"
+                            class="w-full aspect-[3/4] object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="absolute top-4 -left-3 bg-white rounded-xl shadow-lg p-2.5 float">
+                        <div class="flex items-center gap-2"><span class="iconify w-4 h-4 text-accent"
+                                data-icon="lucide:mountain-snow"></span>
+                            <div>
+                                <p class="text-[10px] font-semibold leading-tight">Vallée de la Thur</p>
+                                <p class="text-[9px] text-stone-400">Haut-Rhin · Alsace</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 md:mt-14">
+                <p class="text-stone-400 text-xs tracking-widest uppercase text-center mb-4 reveal">De la vallée aux
+                    sommets</p>
+                <div class="grid grid-cols-3 gap-2 md:gap-4">
+                    <div
+                        class="reveal delay-1 gallery-item group rounded-xl md:rounded-2xl overflow-hidden shadow-md relative">
+                        <img src="https://picsum.photos/seed/alsace-village-flowers-river/600/400.jpg" alt="Villages"
+                            class="w-full aspect-[3/2] object-cover">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <div
+                            class="absolute bottom-2 left-2 md:bottom-3 md:left-3 right-2 md:right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            <p class="text-white text-xs md:text-sm font-medium">Les villages</p>
+                        </div>
+                    </div>
+                    <div
+                        class="reveal delay-2 gallery-item group rounded-xl md:rounded-2xl overflow-hidden shadow-md relative">
+                        <img src="https://picsum.photos/seed/mountain-lake-pine-forest/600/400.jpg" alt="Lacs"
+                            class="w-full aspect-[3/2] object-cover">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <div
+                            class="absolute bottom-2 left-2 md:bottom-3 md:left-3 right-2 md:right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            <p class="text-white text-xs md:text-sm font-medium">Les lacs</p>
+                        </div>
+                    </div>
+                    <div
+                        class="reveal delay-3 gallery-item group rounded-xl md:rounded-2xl overflow-hidden shadow-md relative">
+                        <img src="https://picsum.photos/seed/vosges-ridge-sunset-hiking/600/400.jpg" alt="Sommets"
+                            class="w-full aspect-[3/2] object-cover">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <div
+                            class="absolute bottom-2 left-2 md:bottom-3 md:left-3 right-2 md:right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            <p class="text-white text-xs md:text-sm font-medium">Les sommets</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TÉMOIGNAGE -->
+    <section class="py-14 md:py-20 px-6 bg-stone-900 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="reveal"><span class="quote-mark block mb-2">"</span></div>
+            <blockquote class="font-serif text-2xl md:text-4xl text-white leading-relaxed mb-5 reveal delay-1">L'Agence
+                de Scott, c'est la garantie d'un travail soigné, fait par quelqu'un qui connaît et aime ce territoire.
+            </blockquote>
+            <p class="text-stone-400 text-sm reveal delay-2">— La promesse de Jordan Schmidt</p>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="story" class="relative py-16 md:py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="reveal mb-10 md:mb-14 text-center">
+                <div class="flex items-center justify-center gap-4 mb-4">
+                    <div class="h-px w-10 bg-accent/40"></div><span
+                        class="text-xs font-semibold tracking-[0.3em] uppercase text-accent">Épilogue</span>
+                    <div class="h-px w-10 bg-accent/40"></div>
+                </div>
+                <h2 class="font-serif text-4xl md:text-6xl font-medium tracking-tight">À vous d'écrire<br>la suite</h2>
+                <p class="text-stone-500 mt-3 max-w-xl mx-auto leading-relaxed">Chaque beau projet commence par une
+                    conversation. Racontez-moi le vôtre.</p>
+            </div>
+            <div class="grid lg:grid-cols-5 gap-8 lg:gap-14">
+                <div class="lg:col-span-3 reveal-left">
+                    <form id="contact-form" class="space-y-4">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div><label class="block text-sm font-medium mb-1.5">Votre nom</label><input type="text"
+                                    placeholder="Jean Dupont"
+                                    class="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all duration-300 text-sm">
+                            </div>
+                            <div><label class="block text-sm font-medium mb-1.5">Votre email</label><input type="email"
+                                    placeholder="jean@exemple.fr"
+                                    class="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all duration-300 text-sm">
+                            </div>
+                        </div>
+                        <div><label class="block text-sm font-medium mb-1.5">Type de projet</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <label class="cursor-pointer"><input type="radio" name="project-type" value="web"
+                                        class="peer hidden">
+                                    <div
+                                        class="peer-checked:border-accent peer-checked:bg-accent/5 border-2 border-stone-200 rounded-xl p-3 text-center transition-all duration-300 hover:border-stone-300">
+                                        <span class="iconify w-5 h-5 mx-auto mb-1 text-stone-400"
+                                            data-icon="lucide:code-2"></span>
+                                        <p class="text-xs font-medium">Site Web</p>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer"><input type="radio" name="project-type" value="design"
+                                        class="peer hidden">
+                                    <div
+                                        class="peer-checked:border-accent peer-checked:bg-accent/5 border-2 border-stone-200 rounded-xl p-3 text-center transition-all duration-300 hover:border-stone-300">
+                                        <span class="iconify w-5 h-5 mx-auto mb-1 text-stone-400"
+                                            data-icon="lucide:palette"></span>
+                                        <p class="text-xs font-medium">Graphisme</p>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer"><input type="radio" name="project-type" value="help"
+                                        class="peer hidden">
+                                    <div
+                                        class="peer-checked:border-accent peer-checked:bg-accent/5 border-2 border-stone-200 rounded-xl p-3 text-center transition-all duration-300 hover:border-stone-300">
+                                        <span class="iconify w-5 h-5 mx-auto mb-1 text-stone-400"
+                                            data-icon="lucide:wrench"></span>
+                                        <p class="text-xs font-medium">Assistance</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div><label class="block text-sm font-medium mb-1.5">Votre message</label><textarea rows="4"
+                                placeholder="Racontez-moi votre projet…"
+                                class="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all duration-300 text-sm resize-none"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-stone-900 hover:bg-stone-800 text-white font-medium py-3.5 rounded-xl transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2 group">Envoyer
+                            mon message<span
+                                class="iconify w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                                data-icon="lucide:send"></span></button>
+                        <div id="form-toast"
+                            class="hidden bg-green-50 border border-green-200 text-green-700 rounded-xl p-3 text-sm text-center">
+                            <span class="iconify w-5 h-5 inline-block align-middle mr-1"
+                                data-icon="lucide:check-circle"></span>Message bien reçu ! Je vous réponds très vite.
+                        </div>
+                    </form>
+                </div>
+                <div class="lg:col-span-2 reveal-right">
+                    <div class="space-y-5">
+                        <div>
+                            <h3 class="font-serif text-xl font-medium mb-3">Coordonnées</h3>
+                            <div class="space-y-3">
+                                <a href="mailto:contact@agencedescott.fr"
+                                    class="flex items-center gap-3 text-stone-500 hover:text-accent transition-colors duration-300 group">
+                                    <div
+                                        class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-all duration-300">
+                                        <span
+                                            class="iconify w-4 h-4 text-accent group-hover:text-white transition-colors duration-300"
+                                            data-icon="lucide:mail"></span></div><span
+                                        class="text-sm">contact@agencedescott.fr</span>
+                                </a>
+                                <a href="tel:+33389000000"
+                                    class="flex items-center gap-3 text-stone-500 hover:text-accent transition-colors duration-300 group">
+                                    <div
+                                        class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-all duration-300">
+                                        <span
+                                            class="iconify w-4 h-4 text-accent group-hover:text-white transition-colors duration-300"
+                                            data-icon="lucide:phone"></span></div><span class="text-sm">03 89 XX XX
+                                        XX</span>
+                                </a>
+                                <div class="flex items-center gap-3 text-stone-500">
+                                    <div class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center"><span
+                                            class="iconify w-4 h-4 text-accent" data-icon="lucide:map-pin"></span></div>
+                                    <span class="text-sm">Saint-Amarin, 68550</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-px bg-stone-200"></div>
+                        <div>
+                            <h3 class="font-serif text-xl font-medium mb-3">Réseaux</h3>
+                            <div class="flex gap-2">
+                                <a href="#"
+                                    class="w-9 h-9 bg-stone-100 hover:bg-accent rounded-lg flex items-center justify-center transition-all duration-300 group"><span
+                                        class="iconify w-4 h-4 text-stone-400 group-hover:text-white transition-colors duration-300"
+                                        data-icon="lucide:instagram"></span></a>
+                                <a href="#"
+                                    class="w-9 h-9 bg-stone-100 hover:bg-accent rounded-lg flex items-center justify-center transition-all duration-300 group"><span
+                                        class="iconify w-4 h-4 text-stone-400 group-hover:text-white transition-colors duration-300"
+                                        data-icon="lucide:facebook"></span></a>
+                                <a href="#"
+                                    class="w-9 h-9 bg-stone-100 hover:bg-accent rounded-lg flex items-center justify-center transition-all duration-300 group"><span
+                                        class="iconify w-4 h-4 text-stone-400 group-hover:text-white transition-colors duration-300"
+                                        data-icon="lucide:linkedin"></span></a>
+                            </div>
+                        </div>
+                        <div class="h-px bg-stone-200"></div>
+                        <div class="bg-savor rounded-2xl p-4 border border-stone-200/50">
+                            <div class="flex items-start gap-2.5"><span
+                                    class="iconify w-4 h-4 text-accent flex-shrink-0 mt-0.5"
+                                    data-icon="lucide:clock"></span>
+                                <div>
+                                    <h4 class="font-medium text-sm">Horaires</h4>
+                                    <p class="text-sm text-stone-500">Lun – Ven : 9h – 18h · Sam : Sur RDV</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-stone-900 text-stone-400 py-10 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-10 md:gap-16 mb-10">
+                <div class="flex flex-col items-center md:items-start">
+                    <img src="https://z-cdn-media.chatglm.cn/files/f2cbc85d-caad-46a5-afdb-0bb7ea3f2200.png?auth_key=1877635009-fe20a6fa8d424de8a749fa647d938d10-0-55887186b48f6a282c9dafb80286998e"
+                        alt="L'Agence de Scott" class="h-32 w-auto object-contain mb-4 drop-shadow-lg">
+                    <p class="text-sm leading-relaxed text-center md:text-left max-w-xs">Développement web, graphisme &
+                        assistance informatique. Dans la vallée, pour la vallée.</p>
+                </div>
+                <div class="flex-1 grid grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-white text-sm font-semibold mb-3">Navigation</h4>
+                        <div class="space-y-1.5"><a href="#hero"
+                                class="block text-sm hover:text-accent transition-colors">Accueil</a><a href="#origin"
+                                class="block text-sm hover:text-accent transition-colors">Origine</a><a href="#craft"
+                                class="block text-sm hover:text-accent transition-colors">Savoir-faire</a><a
+                                href="#territory"
+                                class="block text-sm hover:text-accent transition-colors">Territoire</a><a href="#story"
+                                class="block text-sm hover:text-accent transition-colors">Contact</a></div>
+                    </div>
+                    <div>
+                        <h4 class="text-white text-sm font-semibold mb-3">Mentions</h4>
+                        <div class="space-y-1.5">
+                            <p class="text-sm">Agence de Scott</p>
+                            <p class="text-sm">Jordan Schmidt</p>
+                            <p class="text-sm">Auto-entrepreneur</p>
+                            <p class="text-sm">Saint-Amarin, 68550</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-2">
+                <p class="text-xs">&copy; 2025 Agence de Scott. Tous droits réservés.</p>
+                <p class="text-xs">Fait avec <span class="text-accent">♥</span> dans la Vallée de la Thur</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const progressBar = document.getElementById('progress-bar');
+        function updateProgress() { const s = window.scrollY; const d = document.documentElement.scrollHeight - window.innerHeight; progressBar.style.width = (s / d) * 100 + '%'; }
+        window.addEventListener('scroll', updateProgress);
+        const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .deco-line');
+        const rObs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); }); }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+        revealEls.forEach(el => rObs.observe(el));
+        const sections = ['hero', 'origin', 'craft', 'territory', 'story'];
+        const navDots = document.querySelectorAll('.side-nav-dot');
+        function updateSideNav() { let cur = ''; sections.forEach(id => { const s = document.getElementById(id); if (s) { const r = s.getBoundingClientRect(); if (r.top <= window.innerHeight / 2 && r.bottom >= window.innerHeight / 2) cur = id; } }); navDots.forEach(d => d.classList.toggle('active', d.dataset.section === cur)); }
+        navDots.forEach(d => d.addEventListener('click', () => { document.getElementById(d.dataset.section)?.scrollIntoView({ behavior: 'smooth' }); }));
+        window.addEventListener('scroll', updateSideNav);
+        const mainNav = document.getElementById('main-nav'); const burgerIcon = document.getElementById('burger-icon');
+        function updateNavStyle() { if (window.scrollY > 80) { mainNav.classList.remove('at-top'); mainNav.classList.add('scrolled', 'bg-cream/90', 'backdrop-blur-md', 'shadow-sm'); burgerIcon.style.color = '#1c1917'; } else { mainNav.classList.add('at-top'); mainNav.classList.remove('scrolled', 'bg-cream/90', 'backdrop-blur-md', 'shadow-sm'); burgerIcon.style.color = '#fff'; } }
+        window.addEventListener('scroll', updateNavStyle); updateNavStyle();
+        const burgerOpen = document.getElementById('burger-open'); const burgerClose = document.getElementById('burger-close'); const burgerPanel = document.getElementById('burger-panel'); const burgerOverlay = document.getElementById('burger-overlay');
+        function openBurger() { burgerPanel.classList.add('open'); burgerOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeBurger() { burgerPanel.classList.remove('open'); burgerOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+        burgerOpen.addEventListener('click', openBurger); burgerClose.addEventListener('click', closeBurger); burgerOverlay.addEventListener('click', closeBurger);
+        document.querySelectorAll('.burger-link').forEach(l => l.addEventListener('click', () => { closeBurger(); const t = document.querySelector(l.getAttribute('data-href')); if (t) setTimeout(() => t.scrollIntoView({ behavior: 'smooth' }), 400); }));
+        document.querySelector('.burger-cta').addEventListener('click', () => { closeBurger(); setTimeout(() => document.getElementById('story')?.scrollIntoView({ behavior: 'smooth' }), 400); });
+        const tw = document.getElementById('typewriter-text'); const phrases = ["l'Agence de Scott.", "votre site web.", "votre identité.", "votre dépannage."]; let pi = 0, ci = 0, del = false, sp = 80;
+        function typewrite() { const cp = phrases[pi]; if (del) { tw.textContent = cp.substring(0, ci - 1); ci--; sp = 40; } else { tw.textContent = cp.substring(0, ci + 1); ci++; sp = 80; } if (!del && ci === cp.length) { sp = 2500; del = true; } else if (del && ci === 0) { del = false; pi = (pi + 1) % phrases.length; sp = 400; } setTimeout(typewrite, sp); }
+        const hObs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { setTimeout(typewrite, 1200); hObs.unobserve(e.target); } }); }); hObs.observe(document.getElementById('hero'));
+        const heroImg = document.getElementById('hero-img');
+        window.addEventListener('scroll', () => { const s = window.scrollY; if (s < window.innerHeight) heroImg.style.transform = `translateY(${s * 0.3}px) scale(1.05)`; });
+        const counters = document.querySelectorAll('.counter');
+        const cObs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { const t = parseInt(e.target.dataset.target); let c = 0; const inc = t / 30; const timer = setInterval(() => { c += inc; if (c >= t) { e.target.textContent = t; clearInterval(timer); } else e.target.textContent = Math.ceil(c); }, 50); cObs.unobserve(e.target); } }); }, { threshold: 0.5 });
+        counters.forEach(c => cObs.observe(c));
+        const cf = document.getElementById('contact-form'); const ft = document.getElementById('form-toast');
+        cf.addEventListener('submit', (e) => { e.preventDefault(); ft.classList.remove('hidden'); cf.reset(); document.querySelectorAll('input[type="radio"][name="project-type"]').forEach(r => { const d = r.closest('label').querySelector('div'); d.classList.remove('border-accent', 'bg-accent/5'); d.classList.add('border-stone-200'); }); setTimeout(() => ft.classList.add('hidden'), 5000); });
+        document.querySelectorAll('input[type="radio"][name="project-type"]').forEach(r => { r.addEventListener('change', () => { document.querySelectorAll('input[type="radio"][name="project-type"]').forEach(x => { const d = x.closest('label').querySelector('div'); x.checked ? (d.classList.add('border-accent', 'bg-accent/5'), d.classList.remove('border-stone-200')) : (d.classList.remove('border-accent', 'bg-accent/5'), d.classList.add('border-stone-200')); }); }); });
+    </script>
+</body>
+
+</html>

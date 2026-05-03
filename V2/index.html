@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Agence de Scott — Créatif, Digital, Humain</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1C1917;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #E87722;
+            border-radius: 3px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .book-spine {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 10px;
+            z-index: 100;
+            background: linear-gradient(to right, #451A03, #78350F, #92400E, #78350F, #451A03);
+            box-shadow: 4px 0 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .book-spine::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.12), transparent);
+        }
+
+        @media(max-width:768px) {
+            .book-spine {
+                width: 5px;
+            }
+        }
+
+        #readingProgress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            z-index: 200;
+            background: linear-gradient(to right, #E87722, #F59E0B);
+            transition: width 0.15s ease;
+        }
+
+        @keyframes pageTurnIn {
+            0% {
+                transform: perspective(1400px) rotateY(-12deg) translateX(60px);
+            }
+
+            100% {
+                transform: perspective(1400px) rotateY(0deg) translateX(0);
+            }
+        }
+
+        .page-enter {
+            animation: pageTurnIn 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        .page-shadow-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.08) 0%, transparent 40%);
+            transition: opacity 1.2s ease 0.3s;
+        }
+
+        .page-enter .page-shadow-overlay {
+            opacity: 0;
+        }
+
+        .gutter-shadow {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            pointer-events: none;
+        }
+
+        .gutter-light {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.04), transparent);
+        }
+
+        .gutter-dark {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.08), transparent);
+        }
+
+        .page-curl {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            pointer-events: none;
+            background: linear-gradient(135deg, transparent 48%, rgba(0, 0, 0, 0.04) 50%, rgba(0, 0, 0, 0.02) 100%);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .d1 {
+            transition-delay: .1s
+        }
+
+        .d2 {
+            transition-delay: .25s
+        }
+
+        .d3 {
+            transition-delay: .4s
+        }
+
+        .d4 {
+            transition-delay: .55s
+        }
+
+        .d5 {
+            transition-delay: .7s
+        }
+
+        .d6 {
+            transition-delay: .85s
+        }
+
+        .d7 {
+            transition-delay: 1s
+        }
+
+        .d8 {
+            transition-delay: 1.15s
+        }
+
+        .d9 {
+            transition-delay: 1.3s
+        }
+
+        .d10 {
+            transition-delay: 1.45s
+        }
+
+        .d11 {
+            transition-delay: 1.6s
+        }
+
+        .chapter-watermark {
+            position: absolute;
+            top: -1rem;
+            left: 1.5rem;
+            line-height: 1;
+            pointer-events: none;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: clamp(5rem, 12vw, 10rem);
+            color: rgba(232, 119, 34, 0.06);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(10px)
+            }
+        }
+
+        .scroll-hint {
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes floatY {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+        }
+
+        .float {
+            animation: floatY 4s ease-in-out infinite;
+        }
+
+        .svc-card {
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
+        }
+
+        .svc-card:hover {
+            transform: translateY(-10px) perspective(800px) rotateY(-2deg);
+            box-shadow: 14px 14px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .project-card {
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.6s ease;
+        }
+
+        .project-card:hover {
+            transform: rotate(0deg) translateY(-8px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.25);
+            transition: all 0.35s ease;
+        }
+
+        .nav-dot.active {
+            background: #E87722;
+            transform: scale(1.4);
+        }
+
+        .nav-dot-label {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            color: #a8a29e;
+        }
+
+        .nav-dot:hover .nav-dot-label {
+            opacity: 1;
+        }
+
+        .paper-light {
+            background: radial-gradient(ellipse at 30% 40%, rgba(232, 119, 34, 0.04) 0%, transparent 60%), #FFF9F0;
+        }
+
+        .paper-dark {
+            background: #1C1917;
+        }
+
+        #scrollTopBtn {
+            position: fixed;
+            left: 3rem;
+            bottom: 2rem;
+            z-index: 90;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #292524;
+            border: 1px solid #44403C;
+            color: #d6d3d1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        #scrollTopBtn.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        #scrollTopBtn:hover {
+            background: #E87722;
+            border-color: #E87722;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(232, 119, 34, 0.35);
+        }
+
+        #menuToggle {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 300;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(28, 25, 23, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: background 0.3s;
+        }
+
+        #menuToggle:hover {
+            background: rgba(28, 25, 23, 0.95);
+        }
+
+        #menuToggle .bar {
+            width: 18px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform 0.4s, opacity 0.3s;
+        }
+
+        #menuToggle.open .bar:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        #menuToggle.open .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        #menuToggle.open .bar:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        #fullScreenMenu {
+            position: fixed;
+            inset: 0;
+            z-index: 250;
+            background: #1C1917;
+            background-image: radial-gradient(ellipse at 80% 20%, rgba(232, 119, 34, 0.08) 0%, transparent 50%);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-item {
+            opacity: 0;
+            transform: translateX(-25px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .menu-item.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .menu-link {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: #d6d3d1;
+            display: inline-block;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.25rem 0;
+            transition: color 0.3s, padding-left 0.3s;
+        }
+
+        .menu-link:hover {
+            color: #E87722;
+            padding-left: 10px;
+        }
+
+        .menu-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            uppercase;
+            color: #78716c;
+            margin-top: 0.1rem;
+        }
+
+        #toast {
+            transform: translate(-50%, 80px);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        #toast.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        /* ── Portrait signature ── */
+        .portrait-frame {
+            position: relative;
+        }
+
+        .portrait-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .portrait-frame::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid rgba(232, 119, 34, 0.2);
+        }
+
+        /* ── Typewriter cursor ── */
+        @keyframes cursorBlink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.15em;
+            background: #ffffff;
+            margin-left: 3px;
+            vertical-align: text-bottom;
+            animation: cursorBlink 0.75s step-end infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-stone-900 text-stone-100 font-sans overflow-x-hidden">
+
+    <div id="readingProgress" style="width:0%"></div>
+    <div class="book-spine"></div>
+
+    <nav class="fixed right-5 top-1/2 -translate-y-1/2 z-[80] flex flex-col gap-4" id="navDots">
+        <div class="nav-dot active relative" data-idx="0"><span class="nav-dot-label">Couverture</span></div>
+        <div class="nav-dot relative" data-idx="1"><span class="nav-dot-label">Chapitre I</span></div>
+        <div class="nav-dot relative" data-idx="2"><span class="nav-dot-label">Chapitre II</span></div>
+        <div class="nav-dot relative" data-idx="3"><span class="nav-dot-label">Chapitre III</span></div>
+        <div class="nav-dot relative" data-idx="4"><span class="nav-dot-label">Chapitre IV</span></div>
+        <div class="nav-dot relative" data-idx="5"><span class="nav-dot-label">Épilogue</span></div>
+    </nav>
+
+    <button id="scrollTopBtn" aria-label="Remonter en haut"><iconify-icon icon="lucide:chevron-up"
+            width="22"></iconify-icon></button>
+
+    <button id="menuToggle" aria-label="Menu"><span class="bar"></span><span class="bar"></span><span
+            class="bar"></span></button>
+
+    <div id="fullScreenMenu">
+        <div class="text-center px-6">
+            <div class="menu-item" data-delay="100"><img
+                    src="https://z-cdn-media.chatglm.cn/files/8f981516-bb98-49bd-8921-e1a33fc11c99.png?auth_key=1877728789-2fed79002b1f4dac8afd97fa68ff4205-0-57ce83d604edb87654a0e484dedee039"
+                    alt="Logo" class="w-16 mx-auto"></div>
+            <div class="menu-item mt-6" data-delay="180">
+                <div class="menu-link" data-goto="0">Couverture</div>
+                <p class="menu-sub">L'Agence de Scott</p>
+            </div>
+            <div class="menu-item mt-4 md:mt-5" data-delay="260">
+                <div class="menu-link" data-goto="1">Chapitre I</div>
+                <p class="menu-sub">L'Histoire</p>
+            </div>
+            <div class="menu-item mt-4 md:mt-5" data-delay="340">
+                <div class="menu-link" data-goto="2">Chapitre II</div>
+                <p class="menu-sub">Les Savoir-faire</p>
+            </div>
+            <div class="menu-item mt-4 md:mt-5" data-delay="420">
+                <div class="menu-link" data-goto="3">Chapitre III</div>
+                <p class="menu-sub">Les Projets</p>
+            </div>
+            <div class="menu-item mt-4 md:mt-5" data-delay="500">
+                <div class="menu-link" data-goto="4">Chapitre IV</div>
+                <p class="menu-sub">La Vallée</p>
+            </div>
+            <div class="menu-item mt-4 md:mt-5" data-delay="580">
+                <div class="menu-link" data-goto="5">Épilogue</div>
+                <p class="menu-sub">Contact</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 0 — COVER -->
+    <section id="page-0" class="book-page min-h-screen flex items-center justify-center relative overflow-hidden"
+        data-idx="0">
+        <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+            <source
+                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4"
+                type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"></div>
+        <div class="gutter-shadow gutter-dark"></div>
+        <div class="page-curl"></div>
+        <div class="max-w-4xl mx-auto px-8 pl-14 md:pl-20 text-center relative">
+            <div class="reveal d1 mb-10"><img
+                    src="https://z-cdn-media.chatglm.cn/files/8f981516-bb98-49bd-8921-e1a33fc11c99.png?auth_key=1877728789-2fed79002b1f4dac8afd97fa68ff4205-0-57ce83d604edb87654a0e484dedee039"
+                    alt="L'Agence de Scott" class="w-40 md:w-52 mx-auto float"></div>
+            <div class="reveal d2">
+                <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight mb-3 text-white drop-shadow-lg">
+                    L'Agence de <span class="text-orange-500">Scott</span></h1>
+            </div>
+            <div class="reveal d3">
+                <p class="text-base md:text-lg font-light tracking-[0.35em] uppercase text-stone-300 mb-10 drop-shadow-md"
+                    id="typewriter-line"><span id="typewriter-text"></span><span class="typewriter-cursor"></span></p>
+            </div>
+            <div class="reveal d4">
+                <p class="text-stone-400 font-light text-sm flex items-center justify-center gap-2"><iconify-icon
+                        icon="lucide:map-pin" width="14"></iconify-icon> Saint-Amarin · Vallée de Thur · Haut-Rhin</p>
+            </div>
+            <div class="reveal d6 mt-12">
+                <div class="scroll-hint flex flex-col items-center text-stone-400"><span
+                        class="text-[0.65rem] tracking-[0.25em] uppercase mb-2">Scroller pour tourner la
+                        page</span><iconify-icon icon="lucide:chevrons-down" width="22"></iconify-icon></div>
+            </div>
+        </div>
+        <span class="absolute bottom-8 right-12 text-stone-500 font-serif text-sm italic">i</span>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PAGE 1 — L'HISTOIRE (1ère personne)       -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section id="page-1" class="book-page paper-light text-stone-800 min-h-screen relative overflow-hidden"
+        data-idx="1">
+        <div class="page-shadow-overlay"></div>
+        <div class="gutter-shadow gutter-light"></div>
+        <div class="page-curl"></div>
+        <div class="chapter-watermark">I</div>
+
+        <div class="max-w-6xl mx-auto px-8 pl-14 md:pl-20 py-28 md:py-36 relative">
+            <div class="reveal d1 mb-3"><span
+                    class="text-[0.65rem] font-semibold tracking-[0.35em] uppercase text-orange-600">Chapitre
+                    premier</span></div>
+            <div class="reveal d2 mb-16">
+                <h2 class="font-serif text-4xl md:text-6xl tracking-tight text-stone-900">Mon Histoire</h2>
+                <div class="w-14 h-[2px] bg-orange-500 mt-5"></div>
+            </div>
+
+            <div class="grid md:grid-cols-5 gap-12 items-start">
+                <div class="md:col-span-2 flex flex-col items-center reveal d3">
+                    <div class="portrait-frame w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64">
+                        <img src="https://z-cdn-media.chatglm.cn/files/f731fbcd-8db4-4fac-a91c-0b2413d779ce.png?auth_key=1877729329-7b6a01a972de4c7d9a05ee9c8dc80c62-0-16fa48133f75d4c43d56d6d29dbb51f1"
+                            alt="Jordan Schmidt"
+                            class="w-full h-full object-cover rounded-full border-[5px] border-white shadow-xl">
+                    </div>
+                    <div class="mt-5 text-center">
+                        <p class="font-serif text-xl text-stone-900">Jordan Schmidt</p>
+                        <p class="text-stone-400 text-xs font-light tracking-wider mt-1">Fondateur</p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-3 space-y-6">
+                    <p class="reveal d4 text-lg md:text-xl font-light leading-relaxed text-stone-600">
+                        Je m'appelle <strong class="font-medium text-stone-900">Jordan Schmidt</strong>, et je vis au
+                        cœur de la <strong class="font-medium text-stone-900">Vallée de Saint-Amarin</strong>, entre les
+                        sommets vosgiens et le murmure de la Thur.
+                    </p>
+                    <p class="reveal d5 text-lg md:text-xl font-light leading-relaxed text-stone-600">
+                        Passionné par le digital depuis toujours, amoureux du beau et du bien fait, j'ai une conviction
+                        profonde&nbsp;: derrière chaque projet, il y a avant tout une <em
+                            class="text-orange-600 not-italic font-medium">histoire humaine</em>.
+                    </p>
+                    <p class="reveal d6 text-lg md:text-xl font-light leading-relaxed text-stone-600">
+                        C'est cette conviction qui m'a poussé à créer <strong
+                            class="font-medium text-stone-900">L'Agence de Scott</strong>&nbsp;: une agence qui allie
+                        créativité, technologie et proximité, pour accompagner ceux qui font vivre notre territoire.
+                    </p>
+                    <p class="reveal d7 text-lg md:text-xl font-light leading-relaxed text-stone-600">
+                        Parce que je crois qu'une agence locale, c'est quelqu'un qui <strong
+                            class="font-medium text-stone-900">se déplace chez vous</strong>, qui prend le temps de vous
+                        écouter, et qui transforme vos idées en réalité numérique.
+                    </p>
+                    <div class="reveal d9 border-l-4 border-orange-500 pl-6 pt-2 pb-2">
+                        <blockquote class="font-serif text-xl md:text-2xl italic text-stone-600 leading-snug">
+                            «&nbsp;Chaque projet est une page blanche, et ensemble, nous écrivons l'histoire.&nbsp;»
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="absolute bottom-8 right-12 text-stone-300 font-serif text-sm">1</span>
+    </section>
+
+    <!-- PAGE 2 — LES SAVOIR-FAIRE -->
+    <section id="page-2" class="book-page paper-dark min-h-screen relative overflow-hidden" data-idx="2">
+        <div class="page-shadow-overlay"></div>
+        <div class="gutter-shadow gutter-dark"></div>
+        <div class="chapter-watermark" style="color:rgba(232,119,34,0.04)">II</div>
+        <div class="max-w-6xl mx-auto px-8 pl-14 md:pl-20 py-28 md:py-36 relative">
+            <div class="reveal d1 mb-3"><span
+                    class="text-[0.65rem] font-semibold tracking-[0.35em] uppercase text-orange-500">Chapitre
+                    deuxième</span></div>
+            <div class="reveal d2 mb-16">
+                <h2 class="font-serif text-4xl md:text-6xl tracking-tight">Les Savoir-faire</h2>
+                <div class="w-14 h-[2px] bg-orange-500 mt-5"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="svc-card reveal d3 bg-stone-800 border border-stone-700 p-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-28 h-28 bg-orange-500/5 rounded-bl-full"></div>
+                    <div class="w-14 h-14 bg-orange-500/10 rounded-xl flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:code-2" width="28" class="text-orange-500"></iconify-icon>
+                    </div>
+                    <h3 class="font-serif text-2xl mb-4">Développement Web</h3>
+                    <p class="text-stone-400 font-light leading-relaxed text-sm">Sites vitrines, e-commerce,
+                        applications sur mesure. Un code propre, performant, pensé pour vos utilisateurs.</p>
+                    <div class="mt-6 flex flex-wrap gap-2"><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">HTML / CSS</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">JavaScript</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">CMS</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">Responsive</span></div>
+                </div>
+                <div class="svc-card reveal d5 bg-stone-800 border border-stone-700 p-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-28 h-28 bg-teal-500/5 rounded-bl-full"></div>
+                    <div class="w-14 h-14 bg-teal-500/10 rounded-xl flex items-center justify-center mb-6"><iconify-icon
+                            icon="lucide:palette" width="28" class="text-teal-400"></iconify-icon></div>
+                    <h3 class="font-serif text-2xl mb-4">Graphisme</h3>
+                    <p class="text-stone-400 font-light leading-relaxed text-sm">Identité visuelle, logos, supports
+                        print &amp; digital. Un design qui raconte votre histoire et marque les esprits.</p>
+                    <div class="mt-6 flex flex-wrap gap-2"><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">Logo</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">Charte graphique</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">Print</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">UI / UX</span></div>
+                </div>
+                <div class="svc-card reveal d7 bg-stone-800 border border-stone-700 p-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-28 h-28 bg-blue-500/5 rounded-bl-full"></div>
+                    <div class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6"><iconify-icon
+                            icon="lucide:monitor-smartphone" width="28" class="text-blue-400"></iconify-icon></div>
+                    <h3 class="font-serif text-2xl mb-4">Assistance Informatique</h3>
+                    <p class="text-stone-400 font-light leading-relaxed text-sm">Dépannage, installation, conseils à
+                        domicile dans toute la vallée. Un accompagnement humain et de proximité.</p>
+                    <div class="mt-6 flex flex-wrap gap-2"><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">À domicile</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">Installation</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">Dépannage</span><span
+                            class="text-[0.65rem] bg-stone-700/60 px-2 py-1 rounded">Conseil</span></div>
+                </div>
+            </div>
+        </div>
+        <span class="absolute bottom-8 right-12 text-stone-700 font-serif text-sm">2</span>
+    </section>
+
+    <!-- PAGE 3 — LES PROJETS -->
+    <section id="page-3" class="book-page paper-light text-stone-800 min-h-screen relative overflow-hidden"
+        data-idx="3">
+        <div class="page-shadow-overlay"></div>
+        <div class="gutter-shadow gutter-light"></div>
+        <div class="page-curl"></div>
+        <div class="chapter-watermark">III</div>
+        <div class="max-w-6xl mx-auto px-8 pl-14 md:pl-20 py-28 md:py-36 relative">
+            <div class="reveal d1 mb-3"><span
+                    class="text-[0.65rem] font-semibold tracking-[0.35em] uppercase text-orange-600">Chapitre
+                    troisième</span></div>
+            <div class="reveal d2 mb-6">
+                <h2 class="font-serif text-4xl md:text-6xl tracking-tight text-stone-900">Les Projets</h2>
+                <div class="w-14 h-[2px] bg-orange-500 mt-5"></div>
+            </div>
+            <div class="reveal d3 mb-16">
+                <p class="text-lg font-light text-stone-500 max-w-xl">Chaque collaboration est une aventure. Voici
+                    quelques-unes des histoires que j'ai eu le plaisir d'écrire avec mes clients.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
+                <div class="project-card reveal d4" style="transform:rotate(-2deg)">
+                    <div class="bg-white p-3 shadow-xl"><img
+                            src="https://picsum.photos/seed/restaurant-alsacien/600/450.jpg" alt="Auberge du Ballon"
+                            class="w-full h-48 object-cover"></div>
+                    <div class="mt-4 px-1"><span
+                            class="text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-orange-600">Site
+                            Web</span>
+                        <h3 class="font-serif text-xl mt-1 text-stone-900">Auberge du Ballon</h3>
+                        <p class="text-stone-500 text-sm font-light mt-1.5 leading-relaxed">Site vitrine pour un
+                            restaurant gastronomique de la vallée.</p>
+                    </div>
+                </div>
+                <div class="project-card reveal d5" style="transform:rotate(1.5deg)">
+                    <div class="bg-white p-3 shadow-xl"><img src="https://picsum.photos/seed/artisan-logo/600/450.jpg"
+                            alt="Fromagerie Stoffel" class="w-full h-48 object-cover"></div>
+                    <div class="mt-4 px-1"><span
+                            class="text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-teal-600">Graphisme</span>
+                        <h3 class="font-serif text-xl mt-1 text-stone-900">Fromagerie Stoffel</h3>
+                        <p class="text-stone-500 text-sm font-light mt-1.5 leading-relaxed">Identité visuelle
+                            complète&nbsp;: logo, packaging, cartes de visite.</p>
+                    </div>
+                </div>
+                <div class="project-card reveal d6" style="transform:rotate(-1deg)">
+                    <div class="bg-white p-3 shadow-xl"><img
+                            src="https://picsum.photos/seed/tech-startup-web/600/450.jpg" alt="ValléeTech"
+                            class="w-full h-48 object-cover"></div>
+                    <div class="mt-4 px-1"><span
+                            class="text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-blue-600">Application
+                            Web</span>
+                        <h3 class="font-serif text-xl mt-1 text-stone-900">ValléeTech</h3>
+                        <p class="text-stone-500 text-sm font-light mt-1.5 leading-relaxed">Application de gestion pour
+                            un réseau d'entreprises locales.</p>
+                    </div>
+                </div>
+                <div class="project-card reveal d7" style="transform:rotate(2deg)">
+                    <div class="bg-white p-3 shadow-xl"><img src="https://picsum.photos/seed/mountain-gite/600/450.jpg"
+                            alt="Gîte du Markstein" class="w-full h-48 object-cover"></div>
+                    <div class="mt-4 px-1"><span
+                            class="text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-orange-600">Web +
+                            Graphisme</span>
+                        <h3 class="font-serif text-xl mt-1 text-stone-900">Gîte du Markstein</h3>
+                        <p class="text-stone-500 text-sm font-light mt-1.5 leading-relaxed">Refonte complète&nbsp;: site
+                            booking, charte graphique montagne.</p>
+                    </div>
+                </div>
+                <div class="project-card reveal d8" style="transform:rotate(-1.5deg)">
+                    <div class="bg-white p-3 shadow-xl"><img
+                            src="https://picsum.photos/seed/mairie-digitale/600/450.jpg" alt="Mairie de Malmerspach"
+                            class="w-full h-48 object-cover"></div>
+                    <div class="mt-4 px-1"><span
+                            class="text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-blue-600">Assistance</span>
+                        <h3 class="font-serif text-xl mt-1 text-stone-900">Mairie de Malmerspach</h3>
+                        <p class="text-stone-500 text-sm font-light mt-1.5 leading-relaxed">Mise en réseau,
+                            installation, formation du personnel.</p>
+                    </div>
+                </div>
+                <div class="project-card reveal d9" style="transform:rotate(1deg)">
+                    <div class="bg-white p-3 shadow-xl"><img
+                            src="https://picsum.photos/seed/bakery-branding/600/450.jpg" alt="Boulangerie Linder"
+                            class="w-full h-48 object-cover"></div>
+                    <div class="mt-4 px-1"><span
+                            class="text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-teal-600">Graphisme</span>
+                        <h3 class="font-serif text-xl mt-1 text-stone-900">Boulangerie Linder</h3>
+                        <p class="text-stone-500 text-sm font-light mt-1.5 leading-relaxed">Nouvelle identité visuelle
+                            pour une boulangerie artisanale.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="absolute bottom-8 right-12 text-stone-300 font-serif text-sm">3</span>
+    </section>
+
+    <!-- PAGE 4 — LA VALLÉE -->
+    <section id="page-4" class="book-page paper-dark min-h-screen relative overflow-hidden" data-idx="4">
+        <div class="page-shadow-overlay"></div>
+        <div class="gutter-shadow gutter-dark"></div>
+        <div class="chapter-watermark" style="color:rgba(232,119,34,0.04)">IV</div>
+        <div class="max-w-6xl mx-auto px-8 pl-14 md:pl-20 py-28 md:py-36 relative">
+            <div class="reveal d1 mb-3"><span
+                    class="text-[0.65rem] font-semibold tracking-[0.35em] uppercase text-orange-500">Chapitre
+                    quatrième</span></div>
+            <div class="reveal d2 mb-16">
+                <h2 class="font-serif text-4xl md:text-6xl tracking-tight">La Vallée</h2>
+                <div class="w-14 h-[2px] bg-orange-500 mt-5"></div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal d3">
+                    <div class="relative"><img src="https://picsum.photos/seed/vosges-mountain-valley/700/550.jpg"
+                            alt="Vallée de Saint-Amarin" class="w-full h-72 md:h-[28rem] object-cover shadow-2xl"
+                            style="border:8px solid #292524;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
+                        <div
+                            class="absolute -bottom-4 -right-4 bg-orange-500 text-white px-5 py-2.5 font-serif text-lg shadow-lg">
+                            Saint-Amarin</div>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <p class="reveal d4 text-lg md:text-xl font-light leading-relaxed text-stone-400">Nichée au cœur des
+                        <strong class="font-medium text-stone-100">Hautes-Vosges</strong>, la vallée de Saint-Amarin est
+                        un territoire vivant, entre nature sauvage et savoir-faire artisanal.
+                    </p>
+                    <p class="reveal d5 text-lg md:text-xl font-light leading-relaxed text-stone-400">C'est ici que
+                        <strong class="font-medium text-stone-100">L'Agence de Scott</strong> a choisi de poser ses
+                        valises. Parce que le digital a aussi sa place dans nos montagnes.
+                    </p>
+                    <div
+                        class="reveal d6 bg-stone-800 border border-stone-700 p-6 shadow-lg border-l-4 border-orange-500">
+                        <h4 class="font-serif text-lg mb-2 text-stone-100">Zone d'intervention</h4>
+                        <p class="text-stone-500 font-light text-sm leading-relaxed">Assistance informatique à domicile
+                            dans toute la vallée&nbsp;: Saint-Amarin, Malmerspach, Fellering, Oderen, Kruth,
+                            Wildenstein, Ranspach, Husseren-Wessling et tous les alentours.</p>
+                    </div>
+                    <p class="reveal d7 text-lg md:text-xl font-light leading-relaxed text-stone-400">Pour le
+                        développement web et le graphisme, l'agence intervient <strong
+                            class="font-medium text-stone-100">partout en France</strong>. La distance n'est plus un
+                        obstacle.</p>
+                </div>
+            </div>
+        </div>
+        <span class="absolute bottom-8 right-12 text-stone-700 font-serif text-sm">4</span>
+    </section>
+
+    <!-- PAGE 5 — CONTACT -->
+    <section id="page-5" class="book-page paper-light text-stone-800 min-h-screen relative overflow-hidden"
+        data-idx="5">
+        <div class="page-shadow-overlay"></div>
+        <div class="gutter-shadow gutter-light"></div>
+        <div class="page-curl"></div>
+        <div class="chapter-watermark">V</div>
+        <div class="max-w-4xl mx-auto px-8 pl-14 md:pl-20 py-28 md:py-36 relative">
+            <div class="reveal d1 mb-3"><span
+                    class="text-[0.65rem] font-semibold tracking-[0.35em] uppercase text-orange-600">Chapitre
+                    final</span></div>
+            <div class="reveal d2 mb-6">
+                <h2 class="font-serif text-4xl md:text-6xl tracking-tight text-stone-900">L'Épilogue</h2>
+                <div class="w-14 h-[2px] bg-orange-500 mt-5"></div>
+            </div>
+            <div class="reveal d3 mb-14">
+                <p class="text-lg md:text-xl font-light text-stone-500 max-w-xl">Votre histoire commence ici. Parlez-moi
+                    de votre projet, et ensemble, écrivons le prochain chapitre.</p>
+            </div>
+            <form class="space-y-6 max-w-xl reveal d4" onsubmit="handleSubmit(event)">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div><label
+                            class="block text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-stone-500 mb-2">Nom</label><input
+                            type="text" required placeholder="Votre nom"
+                            class="w-full bg-white border border-stone-300 px-4 py-3 text-stone-900 placeholder-stone-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none transition text-sm">
+                    </div>
+                    <div><label
+                            class="block text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-stone-500 mb-2">Email</label><input
+                            type="email" required placeholder="votre@email.fr"
+                            class="w-full bg-white border border-stone-300 px-4 py-3 text-stone-900 placeholder-stone-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none transition text-sm">
+                    </div>
+                </div>
+                <div><label
+                        class="block text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-stone-500 mb-2">Sujet</label><select
+                        class="w-full bg-white border border-stone-300 px-4 py-3 text-stone-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none transition text-sm">
+                        <option value="">Choisissez un sujet</option>
+                        <option>Développement Web</option>
+                        <option>Graphisme</option>
+                        <option>Assistance Informatique</option>
+                        <option>Autre</option>
+                    </select></div>
+                <div><label
+                        class="block text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-stone-500 mb-2">Message</label><textarea
+                        rows="5" required placeholder="Racontez-moi votre projet…"
+                        class="w-full bg-white border border-stone-300 px-4 py-3 text-stone-900 placeholder-stone-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none transition resize-none text-sm"></textarea>
+                </div>
+                <button type="submit"
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 tracking-wider uppercase text-xs transition-all duration-300 flex items-center gap-2 group">Envoyer
+                    le message<iconify-icon icon="lucide:arrow-right" width="16"
+                        class="group-hover:translate-x-1 transition-transform"></iconify-icon></button>
+            </form>
+            <div class="reveal d6 mt-20 grid sm:grid-cols-3 gap-8 border-t border-stone-200 pt-12">
+                <div class="flex items-start gap-3"><iconify-icon icon="lucide:map-pin" width="18"
+                        class="text-orange-500 mt-0.5 shrink-0"></iconify-icon>
+                    <div>
+                        <h4 class="font-medium text-sm mb-1 text-stone-900">Adresse</h4>
+                        <p class="text-stone-500 text-sm font-light">Saint-Amarin<br>68470, France</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3"><iconify-icon icon="lucide:mail" width="18"
+                        class="text-orange-500 mt-0.5 shrink-0"></iconify-icon>
+                    <div>
+                        <h4 class="font-medium text-sm mb-1 text-stone-900">Email</h4>
+                        <p class="text-stone-500 text-sm font-light">contact@agencedescott.fr</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3"><iconify-icon icon="lucide:phone" width="18"
+                        class="text-orange-500 mt-0.5 shrink-0"></iconify-icon>
+                    <div>
+                        <h4 class="font-medium text-sm mb-1 text-stone-900">Téléphone</h4>
+                        <p class="text-stone-500 text-sm font-light">Sur demande</p>
+                    </div>
+                </div>
+            </div>
+            <div class="reveal d7 mt-10 flex items-center gap-3">
+                <a href="#"
+                    class="w-10 h-10 border border-stone-300 flex items-center justify-center text-stone-500 hover:border-orange-500 hover:text-orange-500 transition-colors"><iconify-icon
+                        icon="lucide:facebook" width="17"></iconify-icon></a>
+                <a href="#"
+                    class="w-10 h-10 border border-stone-300 flex items-center justify-center text-stone-500 hover:border-orange-500 hover:text-orange-500 transition-colors"><iconify-icon
+                        icon="lucide:instagram" width="17"></iconify-icon></a>
+                <a href="#"
+                    class="w-10 h-10 border border-stone-300 flex items-center justify-center text-stone-500 hover:border-orange-500 hover:text-orange-500 transition-colors"><iconify-icon
+                        icon="lucide:linkedin" width="17"></iconify-icon></a>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-8 right-8 flex justify-between items-center px-6">
+            <p class="text-stone-400 text-xs font-light">© 2025 L'Agence de Scott — Tous droits réservés</p>
+            <p class="text-stone-300 font-serif text-sm">5</p>
+        </div>
+    </section>
+
+    <div id="toast"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-orange-500 text-white px-6 py-3 shadow-2xl z-[300] flex items-center gap-2 rounded-sm">
+        <iconify-icon icon="lucide:check-circle" width="18"></iconify-icon><span class="text-sm font-medium">Message
+            envoyé avec succès !</span>
+    </div>
+
+    <script>
+            /* ── Typewriter effect ── */
+            (function () {
+                var phrase = "Créatif · Digital · Humain";
+                var el = document.getElementById('typewriter-text');
+                if (!el) return;
+
+                var charIndex = 0;
+                var isDeleting = false;
+                var typeSpeed = 90;    // ms par caractère à l'écriture
+                var deleteSpeed = 45;  // ms par caractère à l'effacement
+                var pauseAfterType = 2200;  // pause avant d'effacer
+                var pauseAfterDelete = 600; // pause avant de réécrire
+
+                function tick() {
+                    if (!isDeleting) {
+                        // Écriture
+                        charIndex++;
+                        el.textContent = phrase.substring(0, charIndex);
+                        if (charIndex === phrase.length) {
+                            // Phrase complète → pause puis effacement
+                            setTimeout(function () { isDeleting = true; tick(); }, pauseAfterType);
+                            return;
+                        }
+                        setTimeout(tick, typeSpeed);
+                    } else {
+                        // Effacement
+                        charIndex--;
+                        el.textContent = phrase.substring(0, charIndex);
+                        if (charIndex === 0) {
+                            // Tout effacé → pause puis réécriture
+                            isDeleting = false;
+                            setTimeout(tick, pauseAfterDelete);
+                            return;
+                        }
+                        setTimeout(tick, deleteSpeed);
+                    }
+                }
+
+                // Lancer après un léger délai pour laisser le reveal se faire
+                setTimeout(tick, 1400);
+            })();
+
+        /* ── Menu ── */
+        function openMenu() { var m = document.getElementById('fullScreenMenu'), b = document.getElementById('menuToggle'); m.style.display = 'flex'; m.style.transition = 'none'; m.style.clipPath = 'circle(0% at calc(100% - 2.2rem) 2.2rem)'; b.classList.add('open'); document.body.style.overflow = 'hidden'; void m.offsetWidth; m.style.transition = 'clip-path 0.8s cubic-bezier(0.65,0,0.35,1)'; m.style.clipPath = 'circle(150% at calc(100% - 2.2rem) 2.2rem)'; var it = m.querySelectorAll('.menu-item'); for (var i = 0; i < it.length; i++) { (function (el, d) { setTimeout(function () { el.classList.add('show') }, d) })(it[i], parseInt(it[i].getAttribute('data-delay')) || 0) } }
+        function closeMenu() { var m = document.getElementById('fullScreenMenu'), b = document.getElementById('menuToggle'), it = m.querySelectorAll('.menu-item'); for (var i = 0; i < it.length; i++)it[i].classList.remove('show'); b.classList.remove('open'); m.style.clipPath = 'circle(0% at calc(100% - 2.2rem) 2.2rem)'; setTimeout(function () { m.style.display = 'none'; document.body.style.overflow = '' }, 800) }
+        function toggleMenu() { var m = document.getElementById('fullScreenMenu'); if (m.style.display === 'flex') closeMenu(); else openMenu() }
+        function goToPage(i) { closeMenu(); setTimeout(function () { var e = document.getElementById('page-' + i); if (e) e.scrollIntoView({ behavior: 'smooth' }) }, 350) }
+        function handleSubmit(e) { e.preventDefault(); document.getElementById('toast').classList.add('show'); e.target.reset(); setTimeout(function () { document.getElementById('toast').classList.remove('show') }, 3500) }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var p0 = document.getElementById('page-0'); if (p0) p0.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible') });
+            document.getElementById('menuToggle').addEventListener('click', toggleMenu);
+            document.getElementById('fullScreenMenu').addEventListener('click', function (e) { var l = e.target.closest('.menu-link'); if (l) { var i = l.getAttribute('data-goto'); if (i !== null) goToPage(parseInt(i)); return } if (e.target === this) closeMenu() });
+        });
+
+        var po = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { var p = e.target; if (!p.classList.contains('page-enter')) p.classList.add('page-enter'); p.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible') }); var i = parseInt(p.getAttribute('data-idx')); document.querySelectorAll('.nav-dot').forEach(function (d, j) { d.classList.toggle('active', j === i) }) } }) }, { threshold: 0.15 });
+        document.querySelectorAll('.book-page').forEach(function (p) { po.observe(p) });
+        document.querySelectorAll('.nav-dot').forEach(function (d) { d.addEventListener('click', function () { var e = document.getElementById('page-' + d.getAttribute('data-idx')); if (e) e.scrollIntoView({ behavior: 'smooth' }) }) });
+
+        var stb = document.getElementById('scrollTopBtn'); stb.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }) });
+        var tk = false; window.addEventListener('scroll', function () { if (!tk) { requestAnimationFrame(function () { var s = window.scrollY, d = document.documentElement.scrollHeight - window.innerHeight; document.getElementById('readingProgress').style.width = (d > 0 ? (s / d) * 100 : 0) + '%'; stb.classList.toggle('visible', s > window.innerHeight * 0.6); tk = false }); tk = true } }, { passive: true });
+    </script>
+</body>
+
+</html>
